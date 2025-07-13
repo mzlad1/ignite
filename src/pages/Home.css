@@ -1173,7 +1173,7 @@ html {
   .footer-content {
     flex-direction: column;
     gap: 2.5rem;
-    text-align: center;
+    text-align: left;
   }
 
   .footer-left,

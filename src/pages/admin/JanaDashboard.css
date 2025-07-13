@@ -236,7 +236,7 @@
 
 .jana-dashboard h1::before {
   content: "👩‍💼";
-  position: absolute;
+  position: relative;
   left: -clamp(4rem, 9vw, 5rem);
   top: 50%;
   transform: translateY(-50%);
@@ -586,7 +586,8 @@
 .jana-dashboard .feedback-list,
 .jana-dashboard .bundles-list,
 .jana-dashboard .packages-list,
-.jana-dashboard .offers-list {
+.jana-dashboard .offers-list,
+.jana-dashboard .faqs-list {
   display: grid;
   gap: clamp(1.5rem, 3vw, 2rem);
   position: relative;
@@ -683,7 +684,7 @@
 
 .jana-dashboard .booking-info p {
   font-size: clamp(1rem, 2.2vw, 1.1rem);
-  color: var(--cosmic-gray);
+  color: var(--white);
   margin-bottom: clamp(0.5rem, 1.5vw, 0.8rem);
   font-weight: 500;
 }
@@ -1053,6 +1054,101 @@
   box-shadow: 0 12px 25px var(--shadow-dark);
 }
 
+/* Package Actions */
+.jana-dashboard .package-actions {
+  display: flex;
+  gap: clamp(0.8rem, 2vw, 1rem);
+  margin-top: clamp(1rem, 2vw, 1.2rem);
+}
+
+.jana-dashboard .package-actions button.edit {
+  background: var(--gradient-stellar);
+  color: var(--white);
+  border: none;
+  border-radius: 15px;
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Fredoka", sans-serif;
+  box-shadow: 0 8px 20px rgba(74, 159, 255, 0.3);
+  flex: 1;
+}
+
+.jana-dashboard .package-actions button.edit:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 25px var(--shadow-dark);
+}
+
+/* Edit Package Form */
+.jana-dashboard .edit-package-form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.2rem);
+}
+
+.jana-dashboard .edit-package-form input {
+  padding: clamp(0.8rem, 2vw, 1rem);
+  border: 2px solid rgba(255, 127, 0, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--cosmic-dark);
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.jana-dashboard .edit-package-form input:focus {
+  outline: none;
+  border-color: var(--aurora-orange);
+  box-shadow: 0 0 0 3px rgba(255, 127, 0, 0.1);
+}
+
+.jana-dashboard .edit-items-section {
+  padding: clamp(1rem, 2vw, 1.2rem);
+  background: rgba(74, 159, 255, 0.1);
+  border-radius: 12px;
+  border-left: 4px solid var(--stellar-blue);
+}
+
+.jana-dashboard .edit-items-section label {
+  display: block;
+  font-size: clamp(1rem, 2.2vw, 1.1rem);
+  font-weight: 600;
+  color: var(--cosmic-dark);
+  margin-bottom: clamp(0.8rem, 2vw, 1rem);
+}
+
+.jana-dashboard .edit-package-actions {
+  display: flex;
+  gap: clamp(0.8rem, 2vw, 1rem);
+  margin-top: clamp(1rem, 2vw, 1.2rem);
+}
+
+.jana-dashboard .edit-package-actions button {
+  background: var(--gradient-success);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Fredoka", sans-serif;
+  flex: 1;
+}
+
+.jana-dashboard .edit-package-actions button:last-child {
+  background: var(--cosmic-gray);
+}
+
+.jana-dashboard .edit-package-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--shadow-cosmic);
+}
+
 /* Loading Animation for Dynamic Content */
 .jana-dashboard .bookings-list,
 .jana-dashboard .menu-list,
@@ -1331,6 +1427,99 @@
 }
 
 .jana-dashboard .offer-card button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 25px var(--shadow-dark);
+}
+
+/* Enhanced FAQ Cards */
+.jana-dashboard .faqs-list {
+  grid-template-columns: 1fr;
+}
+
+.jana-dashboard .faq-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: clamp(1.8rem, 3.5vw, 2.2rem);
+  border: 2px solid rgba(255, 127, 0, 0.2);
+  box-shadow: 0 15px 35px var(--shadow-cosmic);
+  transition: all 0.3s ease;
+  animation: jana-cardSlideIn 0.6s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.jana-dashboard .faq-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 127, 0, 0.08),
+    transparent
+  );
+  transition: left 0.8s ease;
+}
+
+.jana-dashboard .faq-card:hover::before {
+  left: 100%;
+}
+
+.jana-dashboard .faq-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  border-color: var(--aurora-orange);
+  box-shadow: 0 20px 40px var(--shadow-dark);
+}
+
+.jana-dashboard .faq-question {
+  margin-bottom: clamp(1rem, 2vw, 1.2rem);
+}
+
+.jana-dashboard .faq-question h4 {
+  font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+  font-weight: 700;
+  color: var(--cosmic-dark);
+  background: var(--gradient-stellar);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.4;
+}
+
+.jana-dashboard .faq-answer {
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  padding: clamp(1rem, 2vw, 1.2rem);
+  background: rgba(74, 159, 255, 0.1);
+  border-radius: 12px;
+  border-left: 4px solid var(--stellar-blue);
+}
+
+.jana-dashboard .faq-answer p {
+  font-size: clamp(1rem, 2.2vw, 1.1rem);
+  color: var(--cosmic-gray);
+  line-height: 1.6;
+  font-weight: 500;
+  margin: 0;
+}
+
+.jana-dashboard .faq-card button {
+  background: var(--gradient-danger);
+  color: var(--white);
+  border: none;
+  border-radius: 15px;
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Fredoka", sans-serif;
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+}
+
+.jana-dashboard .faq-card button:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 12px 25px var(--shadow-dark);
 }

@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import "./Booking.css";
+import { useToast } from "../contexts/ToastContext";
 
 const Booking = () => {
+  const { showSuccess, showError, showWarning, showConfirm } = useToast();
   const [bookingType, setBookingType] = useState("regular");
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
+    email: "", // Add email field
     people: 1,
     rounds: 1,
     date: new Date(),
@@ -20,6 +23,8 @@ const Booking = () => {
   const [slotAvailability, setSlotAvailability] = useState({});
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [birthdayPackages, setBirthdayPackages] = useState([]);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingDetails, setBookingDetails] = useState(null);
 
   const timeSlots = [
     "15:00",
@@ -135,7 +140,7 @@ const Booking = () => {
 
     // Check if all required slots are available for the booking duration
     if (!isSlotAvailable(formData.time, formData.duration)) {
-      alert(
+      showWarning(
         "Sorry, this time slot conflicts with existing bookings. Please select another time."
       );
       return;
@@ -147,16 +152,27 @@ const Booking = () => {
         date: formData.date.toDateString(),
         createdAt: new Date(),
         type: bookingType,
+        status: "pending", // Add pending status
+        contactAttempts: 0,
+        notes: "",
       };
 
-      await addDoc(collection(db, "bookings"), bookingData);
-      alert(`${getBookingTypeLabel()} booking submitted successfully!`);
+      const docRef = await addDoc(collection(db, "bookings"), bookingData);
 
-      fetchSlotAvailability();
+      // Store booking details for the modal
+      setBookingDetails({
+        id: docRef.id,
+        ...bookingData,
+      });
 
+      // Show booking confirmation modal
+      setShowBookingModal(true);
+
+      // Reset form
       setFormData({
         name: "",
         phone: "",
+        email: "", // Reset email
         people: 1,
         rounds: 1,
         date: new Date(),
@@ -168,7 +184,7 @@ const Booking = () => {
       });
       setBookingType("regular");
     } catch (error) {
-      alert("Error submitting booking: " + error.message);
+      showError("Error submitting booking: " + error.message);
     }
   };
 
@@ -320,6 +336,88 @@ const Booking = () => {
     );
   };
 
+  // Booking Confirmation Modal Component
+  const BookingConfirmationModal = () => {
+    if (!showBookingModal || !bookingDetails) return null;
+
+    return (
+      <div
+        className="booking-modal-overlay"
+        onClick={() => setShowBookingModal(false)}
+      >
+        <div className="booking-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="booking-modal-header">
+            <div className="success-icon">🎉</div>
+            <h2>Booking Submitted Successfully!</h2>
+          </div>
+
+          <div className="booking-modal-body">
+            <div className="booking-summary">
+              <h3>Booking Summary</h3>
+              <div className="booking-detail">
+                <span className="label">Name:</span>
+                <span className="value">{bookingDetails.name}</span>
+              </div>
+              <div className="booking-detail">
+                <span className="label">Date & Time:</span>
+                <span className="value">
+                  {bookingDetails.date} at {bookingDetails.time}
+                </span>
+              </div>
+              <div className="booking-detail">
+                <span className="label">People:</span>
+                <span className="value">{bookingDetails.people}</span>
+              </div>
+              {bookingDetails.type === "regular" ? (
+                <div className="booking-detail">
+                  <span className="label">Rounds:</span>
+                  <span className="value">{bookingDetails.rounds}</span>
+                </div>
+              ) : (
+                <div className="booking-detail">
+                  <span className="label">Package:</span>
+                  <span className="value">{bookingDetails.bundleName}</span>
+                </div>
+              )}
+              <div className="booking-detail">
+                <span className="label">Phone:</span>
+                <span className="value">{bookingDetails.phone}</span>
+              </div>
+            </div>
+
+            <div className="status-message">
+              <div className="status-icon">⏳</div>
+              <h4>Your booking is pending confirmation</h4>
+              <p>
+                We have received your booking request. Our team will contact you
+                via WhatsApp at <strong>{bookingDetails.phone}</strong> within
+                the next few hours to confirm your booking details and
+                availability.
+              </p>
+              <div className="next-steps">
+                <h5>What happens next?</h5>
+                <ul>
+                  <li>📞 We'll call or WhatsApp you to confirm</li>
+                  <li>✅ Once confirmed, your booking will be secured</li>
+                  <li>📧 You'll receive final confirmation details</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="booking-modal-footer">
+            <button
+              className="modal-close-btn"
+              onClick={() => setShowBookingModal(false)}
+            >
+              Got it, thanks!
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="booking">
       <div className="container">
@@ -373,6 +471,22 @@ const Booking = () => {
                     }
                     required
                   />
+                </div>
+
+                <div className="form-group">
+                  <label>Email:</label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    placeholder="your@email.com"
+                    required
+                  />
+                  <small className="field-note">
+                    We'll send confirmation emails to this address
+                  </small>
                 </div>
 
                 <div className="form-group">
@@ -562,6 +676,183 @@ const Booking = () => {
           </div>
         </div>
       </div>
+
+      <BookingConfirmationModal />
+
+      {/* Add styles for the modal */}
+      <style jsx>{`
+        .booking-modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10001;
+          animation: fadeIn 0.3s ease-out;
+        }
+
+        .booking-modal {
+          background: white;
+          border-radius: 16px;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+          max-width: 500px;
+          width: 90%;
+          max-height: 90vh;
+          overflow-y: auto;
+          animation: slideIn 0.3s ease-out;
+        }
+
+        .booking-modal-header {
+          text-align: center;
+          padding: 24px 24px 16px;
+          border-bottom: 1px solid #f0f0f0;
+        }
+
+        .success-icon {
+          font-size: 48px;
+          margin-bottom: 16px;
+        }
+
+        .booking-modal-header h2 {
+          margin: 0;
+          color: #22c55e;
+          font-size: 24px;
+        }
+
+        .booking-modal-body {
+          padding: 24px;
+        }
+
+        .booking-summary {
+          margin-bottom: 24px;
+          padding: 16px;
+          background: #f8fafc;
+          border-radius: 8px;
+        }
+
+        .booking-summary h3 {
+          margin: 0 0 16px 0;
+          color: #334155;
+        }
+
+        .booking-detail {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 8px;
+        }
+
+        .booking-detail .label {
+          font-weight: 500;
+          color: #64748b;
+        }
+
+        .booking-detail .value {
+          color: #334155;
+        }
+
+        .status-message {
+          text-align: center;
+        }
+
+        .status-icon {
+          font-size: 32px;
+          margin-bottom: 16px;
+        }
+
+        .status-message h4 {
+          margin: 0 0 16px 0;
+          color: #f59e0b;
+        }
+
+        .status-message p {
+          margin-bottom: 24px;
+          line-height: 1.6;
+          color: #64748b;
+        }
+
+        .next-steps {
+          text-align: left;
+          background: #fefce8;
+          padding: 16px;
+          border-radius: 8px;
+          border-left: 4px solid #f59e0b;
+        }
+
+        .next-steps h5 {
+          margin: 0 0 12px 0;
+          color: #92400e;
+        }
+
+        .next-steps ul {
+          margin: 0;
+          padding-left: 20px;
+        }
+
+        .next-steps li {
+          margin-bottom: 8px;
+          color: #78716c;
+        }
+
+        .booking-modal-footer {
+          padding: 16px 24px 24px;
+          text-align: center;
+        }
+
+        .modal-close-btn {
+          background: linear-gradient(135deg, #22c55e, #16a34a);
+          color: white;
+          border: none;
+          border-radius: 8px;
+          padding: 12px 32px;
+          font-size: 16px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideIn {
+          from {
+            transform: scale(0.9) translateY(-20px);
+            opacity: 0;
+          }
+          to {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .booking-modal {
+            margin: 20px;
+            width: calc(100% - 40px);
+          }
+        }
+
+        .field-note {
+          display: block;
+          font-size: 12px;
+          color: #6b7280;
+          margin-top: 4px;
+        }
+      `}</style>
     </div>
   );
 };

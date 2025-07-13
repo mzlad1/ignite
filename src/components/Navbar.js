@@ -60,7 +60,7 @@ const Navbar = () => {
 
   const getAdminDashboardLink = () => {
     if (userRole === "jana") {
-      return "/admin/jana";
+      return "/admin/dashboard";
     } else if (userRole === "reception") {
       return "/admin/calendar";
     }
@@ -161,13 +161,6 @@ const Navbar = () => {
 
           {user ? (
             <div className="admin-section">
-              <Link
-                to={getAdminDashboardLink()}
-                className="nav-link admin-link"
-                onClick={closeMobileMenu}
-              >
-                🏢 Admin Panel
-              </Link>
               <button
                 onClick={() => {
                   handleLogout();
@@ -179,15 +172,7 @@ const Navbar = () => {
                 🔓 Logout
               </button>
             </div>
-          ) : (
-            <Link
-              to="/admin"
-              className="nav-link admin-link"
-              onClick={closeMobileMenu}
-            >
-              🔐 Admin Login
-            </Link>
-          )}
+          ) : null}
         </div>
 
         {mobileMenuOpen && (

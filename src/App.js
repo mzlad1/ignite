@@ -1,8 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
+import { ToastProvider } from "./contexts/ToastContext";
 
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
+
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Menu from "./pages/Menu";
@@ -16,29 +20,88 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import ReceptionCalendar from "./pages/admin/ReceptionCalendar";
 import JanaDashboard from "./pages/admin/JanaDashboard";
 import AddUser from "./pages/admin/AddUser";
+import ManageUsers from "./pages/admin/ManageUsers";
+import Settings from "./pages/admin/Settings";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/offers" element={<Offers />} />
-          <Route path="/booking" element={<Booking />} />
-          <Route path="/feedback" element={<Feedback />} />
-          <Route path="/birthday-packages" element={<BirthdayPackages />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/calendar" element={<ReceptionCalendar />} />
-          <Route path="/admin/jana" element={<JanaDashboard />} />
-          <Route path="/admin/add-user" element={<AddUser />} />
-        </Routes>
-      </div>
-    </Router>
+    <ToastProvider>
+      <Router>
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="/offers" element={<Offers />} />
+            <Route path="/booking" element={<Booking />} />
+            <Route path="/feedback" element={<Feedback />} />
+            <Route path="/birthday-packages" element={<BirthdayPackages />} />
+            <Route path="/faq" element={<FAQ />} />
+
+            {/* Public route - redirects authenticated users */}
+            <Route
+              path="/admin"
+              element={
+                <PublicRoute>
+                  <AdminLogin />
+                </PublicRoute>
+              }
+            />
+
+            {/* Protected admin routes */}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <ProtectedRoute requiredRole="jana">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/calendar"
+              element={
+                <ProtectedRoute requiredRole="reception">
+                  <ReceptionCalendar />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/jana"
+              element={
+                <ProtectedRoute requiredRole="jana">
+                  <JanaDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/add-user"
+              element={
+                <ProtectedRoute requiredRole="jana">
+                  <AddUser />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/manage-users"
+              element={
+                <ProtectedRoute requiredRole="jana">
+                  <ManageUsers />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
+      </Router>
+    </ToastProvider>
   );
 }
 

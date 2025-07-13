@@ -1,64 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 import "./FAQ.css";
 
 const FAQ = () => {
-  const [openFAQ, setOpenFAQ] = useState(null);
+  const [faqs, setFaqs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [openIndex, setOpenIndex] = useState(null);
 
-  const faqs = [
-    {
-      question: "How long is each bowling session?",
-      answer:
-        "Each bowling session is 45 minutes long, giving you plenty of time to enjoy strikes, spares, and maybe a few gutter balls with friends!",
-    },
-    {
-      question: "How many people can play per lane?",
-      answer:
-        "Maximum 6 people per lane. Perfect for small groups, families, or birthday parties!",
-    },
-    {
-      question: "What are your operating hours?",
-      answer:
-        "We're open daily from 3:00 PM to 11:00 PM. Come and experience the cosmic fun anytime during these hours!",
-    },
-    {
-      question: "How many rounds can we play?",
-      answer:
-        "You can play a maximum of 3 rounds per booking. Each round gives you fresh chances to beat your high score!",
-    },
-    {
-      question: "How can I cancel my booking?",
-      answer:
-        "For cancellations, please contact us at 0566164488. We'll help you reschedule or process your cancellation quickly.",
-    },
-    {
-      question: "How many bowling lanes do you have?",
-      answer:
-        "We have 6 modern bowling lanes available for booking, each equipped with the latest technology for the best gaming experience.",
-    },
-    {
-      question: "Do you offer birthday packages?",
-      answer:
-        "Yes! We have 3 different birthday packages featuring VR sessions, extended bowling time, and reserved seating. Perfect for making memories!",
-    },
-    {
-      question: "Can I book in advance?",
-      answer:
-        "Absolutely! You can book sessions in advance through our online booking system. We recommend booking early, especially for weekends and special events.",
-    },
-    {
-      question: "Do you have VR gaming available?",
-      answer:
-        "Yes! Our VR gaming zone offers immersive virtual reality experiences. VR sessions are included in our birthday packages or can be booked separately.",
-    },
-    {
-      question: "Is there food and drinks available?",
-      answer:
-        "Visit our Grab & Giggle Café for refreshing drinks and snacks! Perfect for recharging between games or celebrating your victories.",
-    },
-  ];
+  useEffect(() => {
+    fetchFaqs();
+  }, []);
 
-  const handleFAQToggle = (index) => {
-    setOpenFAQ(openFAQ === index ? null : index);
+  const fetchFaqs = async () => {
+    try {
+      const faqsSnapshot = await getDocs(collection(db, "faqs"));
+      setFaqs(faqsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    } catch (error) {
+      console.error("Error fetching FAQs:", error);
+    }
+    setLoading(false);
+  };
+
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
@@ -72,25 +37,34 @@ const FAQ = () => {
         <h1>❓ Frequently Asked Questions</h1>
 
         <div className="faq-list">
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className={`faq-item ${openFAQ === index ? "active" : ""}`}
-            >
-              <div
-                className="faq-question"
-                onClick={() => handleFAQToggle(index)}
-              >
-                <h3>{faq.question}</h3>
-                <span className="toggle">{openFAQ === index ? "−" : "+"}</span>
-              </div>
-              {openFAQ === index && (
-                <div className="faq-answer">
+          {loading ? (
+            <div className="loading">Loading FAQs...</div>
+          ) : faqs.length === 0 ? (
+            <div className="no-faqs">
+              <p>No FAQs available at the moment.</p>
+            </div>
+          ) : (
+            faqs.map((faq, index) => (
+              <div key={faq.id} className="faq-item">
+                <div
+                  className={`faq-question ${
+                    openIndex === index ? "active" : ""
+                  }`}
+                  onClick={() => toggleFAQ(index)}
+                >
+                  <h3>{faq.question}</h3>
+                  <span className="faq-toggle">
+                    {openIndex === index ? "−" : "+"}
+                  </span>
+                </div>
+                <div
+                  className={`faq-answer ${openIndex === index ? "open" : ""}`}
+                >
                   <p>{faq.answer}</p>
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            ))
+          )}
         </div>
 
         <div className="contact-info">

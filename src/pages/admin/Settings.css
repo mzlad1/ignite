@@ -1,0 +1,806 @@
+/* Admin Settings Page CSS with Enhanced Cosmic Theme and Character Integration */
+
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --cosmic-dark: #0a0b1a;
+  --space-navy: #1a1b2e;
+  --deep-space: #16213e;
+  --aurora-orange: #ff7f00;
+  --energy-amber: #ffa500;
+  --cosmic-gold: #ffd700;
+  --stellar-blue: #4a9fff;
+  --nebula-purple: #6b46c1;
+  --white: #ffffff;
+  --cosmic-gray: #2d3748;
+  --error-red: #e74c3c;
+  --success-green: #27ae60;
+  --shadow-cosmic: rgba(255, 127, 0, 0.1);
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+  --shadow-heavy: rgba(0, 0, 0, 0.5);
+
+  --gradient-cosmic: linear-gradient(
+    135deg,
+    var(--cosmic-dark),
+    var(--space-navy)
+  );
+  --gradient-aurora: linear-gradient(
+    135deg,
+    var(--aurora-orange),
+    var(--energy-amber)
+  );
+  --gradient-stellar: linear-gradient(
+    135deg,
+    var(--stellar-blue),
+    var(--nebula-purple)
+  );
+  --gradient-energy: linear-gradient(
+    135deg,
+    var(--energy-amber),
+    var(--cosmic-gold)
+  );
+}
+
+.settings-admin-page {
+  font-family: "Fredoka", sans-serif;
+  background: var(--gradient-cosmic);
+  min-height: 100vh;
+  position: relative;
+  padding: 2rem 0;
+}
+
+/* Enhanced Animated Background Elements */
+.settings-admin-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 20% 30%,
+      rgba(255, 127, 0, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(255, 165, 0, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(255, 215, 0, 0.05) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 15% 80%,
+      rgba(74, 159, 255, 0.06) 0%,
+      transparent 50%
+    );
+  animation: settings-cosmic-float 25s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Large Floating Enzo Character */
+.settings-admin-page::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  right: -8%;
+  width: clamp(400px, 35vw, 600px);
+  height: clamp(400px, 35vw, 600px);
+  background-image: url("/public/images/Enzo1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.12;
+  animation: settings-enzo-float 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Zoe Helper Character */
+.settings-admin-page .settings-zoe-helper {
+  position: absolute;
+  bottom: 20%;
+  left: -5%;
+  width: clamp(300px, 25vw, 450px);
+  height: clamp(300px, 25vw, 450px);
+  background-image: url("/public/images/zoe2.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+  animation: settings-zoe-float 18s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Floating Security Icons */
+.settings-admin-page .settings-security-icon-1 {
+  position: absolute;
+  top: 25%;
+  left: 8%;
+  width: clamp(80px, 10vw, 120px);
+  height: clamp(80px, 10vw, 120px);
+  background: var(--gradient-stellar);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2rem, 4vw, 3rem);
+  opacity: 0.15;
+  animation: settings-security-float 12s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.settings-admin-page .settings-security-icon-1::before {
+  content: "🔒";
+}
+
+.settings-admin-page .settings-security-icon-2 {
+  position: absolute;
+  top: 65%;
+  right: 12%;
+  width: clamp(60px, 8vw, 100px);
+  height: clamp(60px, 8vw, 100px);
+  background: var(--gradient-aurora);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  opacity: 0.15;
+  animation: settings-security-float 15s ease-in-out infinite 0.5s;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.settings-admin-page .settings-security-icon-2::before {
+  content: "🛡️";
+}
+
+@keyframes settings-cosmic-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-25px) rotate(2deg);
+  }
+  66% {
+    transform: translateY(15px) rotate(-1.5deg);
+  }
+}
+
+@keyframes settings-enzo-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translateY(-40px) rotate(5deg) scale(1.03);
+    opacity: 0.18;
+  }
+}
+
+@keyframes settings-zoe-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translateY(-35px) rotate(-4deg) scale(1.05);
+    opacity: 0.16;
+  }
+}
+
+@keyframes settings-security-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.1);
+  }
+}
+
+.settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2rem);
+  position: relative;
+  z-index: 2;
+}
+
+/* Main Title */
+.settings-admin-page h1 {
+  text-align: center;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: settings-slide-in-down 1s ease-out;
+}
+
+.settings-admin-page h1::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(120px, 25vw, 160px);
+  height: 4px;
+  background: var(--gradient-energy);
+  border-radius: 2px;
+  animation: settings-expand-width 1.5s ease-out 0.5s both;
+}
+
+@keyframes settings-slide-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes settings-expand-width {
+  from {
+    width: 0;
+  }
+  to {
+    width: clamp(120px, 25vw, 160px);
+  }
+}
+
+/* Settings Content Container */
+.settings-content {
+  background: rgba(26, 27, 46, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: clamp(2.5rem, 5vw, 3.5rem);
+  box-shadow: 0 30px 60px var(--shadow-dark),
+    inset 0 1px 0 rgba(255, 127, 0, 0.2);
+  border: 2px solid rgba(255, 127, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  animation: settings-fade-in-up 1s ease-out 0.3s both;
+}
+
+/* Large Zoe in Settings Background */
+.settings-content::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -20%;
+  transform: translateY(-50%);
+  width: clamp(600px, 50vw, 900px);
+  height: clamp(600px, 50vw, 900px);
+  background-image: url("/public/images/zoe1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.06;
+  animation: settings-zoe-content-float 16s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Settings Helper Icon */
+.settings-content::after {
+  content: "⚙️";
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  opacity: 0.3;
+  animation: settings-icon-spin 20s linear infinite;
+  z-index: 1;
+}
+
+@keyframes settings-zoe-content-float {
+  0%,
+  100% {
+    transform: translateY(-50%) scale(1) rotate(0deg);
+    opacity: 0.06;
+  }
+  50% {
+    transform: translateY(-48%) scale(1.02) rotate(3deg);
+    opacity: 0.12;
+  }
+}
+
+@keyframes settings-icon-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes settings-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Section Title */
+.settings-content h2 {
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  background: var(--gradient-aurora);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Password Form */
+.settings-password-form {
+  position: relative;
+  z-index: 2;
+}
+
+/* Setting Groups */
+.settings-group {
+  margin-bottom: clamp(1.8rem, 4vw, 2.2rem);
+  position: relative;
+}
+
+.settings-group label {
+  display: block;
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 0.8rem;
+  position: relative;
+}
+
+.settings-group label::before {
+  content: "🔐";
+  margin-right: 0.5rem;
+  font-size: 1em;
+  opacity: 0.7;
+}
+
+.settings-group input {
+  width: 100%;
+  padding: clamp(1rem, 2.5vw, 1.3rem) clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1rem, 2.2vw, 1.1rem);
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-family: "Fredoka", sans-serif;
+  font-weight: 400;
+  position: relative;
+}
+
+.settings-group input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.settings-group input:focus {
+  outline: none;
+  border-color: var(--aurora-orange);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 6px rgba(255, 127, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+.settings-group input:valid {
+  border-color: var(--success-green);
+}
+
+/* Enhanced Message Styles */
+.settings-error-message {
+  background: rgba(231, 76, 60, 0.15);
+  color: var(--error-red);
+  padding: clamp(1rem, 2.5vw, 1.3rem) clamp(1.5rem, 3vw, 2rem);
+  border-radius: 20px;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-weight: 500;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  border-left: 4px solid var(--error-red);
+  position: relative;
+  animation: settings-shake-in 0.6s ease-out;
+}
+
+.settings-error-message::before {
+  content: "⚠️";
+  margin-right: 0.5rem;
+  font-size: 1.2em;
+}
+
+.settings-success-message {
+  background: rgba(39, 174, 96, 0.15);
+  color: var(--success-green);
+  padding: clamp(1rem, 2.5vw, 1.3rem) clamp(1.5rem, 3vw, 2rem);
+  border-radius: 20px;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-weight: 500;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  border-left: 4px solid var(--success-green);
+  position: relative;
+  animation: settings-success-bounce 0.8s ease-out;
+}
+
+.settings-success-message::before {
+  content: "✅";
+  margin-right: 0.5rem;
+  font-size: 1.2em;
+}
+
+@keyframes settings-shake-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes settings-success-bounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Settings Actions */
+.settings-actions {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vw, 2rem);
+  margin-top: clamp(2rem, 4vw, 2.5rem);
+  flex-wrap: wrap;
+}
+
+/* Enhanced Button Styles */
+.settings-btn-save {
+  background: var(--gradient-aurora);
+  color: var(--white);
+  border: none;
+  border-radius: 25px;
+  padding: clamp(1.2rem, 3vw, 1.5rem) clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 20px 40px var(--shadow-dark);
+  font-family: "Fredoka", sans-serif;
+  position: relative;
+  overflow: hidden;
+  min-width: clamp(150px, 30vw, 200px);
+}
+
+.settings-btn-save::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.8s;
+}
+
+.settings-btn-save:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.settings-btn-save:hover:not(:disabled) {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 30px 60px var(--shadow-heavy);
+}
+
+.settings-btn-save:disabled {
+  background: var(--cosmic-gray);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 8px 20px var(--shadow-cosmic);
+  opacity: 0.7;
+}
+
+.settings-btn-cancel {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  padding: clamp(1.2rem, 3vw, 1.5rem) clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 15px 35px var(--shadow-cosmic);
+  font-family: "Fredoka", sans-serif;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  min-width: clamp(150px, 30vw, 200px);
+}
+
+.settings-btn-cancel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.8s;
+}
+
+.settings-btn-cancel:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.settings-btn-cancel:hover:not(:disabled) {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 25px 50px var(--shadow-dark);
+  border-color: var(--stellar-blue);
+  background: rgba(74, 159, 255, 0.15);
+}
+
+.settings-btn-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 900px) {
+  /* Adjust main characters for tablets */
+  .settings-admin-page::after {
+    width: clamp(300px, 30vw, 450px);
+    height: clamp(300px, 30vw, 450px);
+    top: 20%;
+    right: -12%;
+  }
+
+  .settings-admin-page .settings-zoe-helper {
+    width: clamp(250px, 25vw, 350px);
+    height: clamp(250px, 25vw, 350px);
+    bottom: 25%;
+    left: -8%;
+  }
+
+  .settings-admin-page .settings-security-icon-1,
+  .settings-admin-page .settings-security-icon-2 {
+    width: clamp(60px, 8vw, 90px);
+    height: clamp(60px, 8vw, 90px);
+  }
+
+  .settings-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 0 1rem;
+  }
+
+  /* Hide large background characters on mobile for performance */
+  .settings-admin-page::after,
+  .settings-admin-page .settings-zoe-helper,
+  .settings-admin-page .settings-security-icon-1,
+  .settings-admin-page .settings-security-icon-2 {
+    display: none;
+  }
+
+  .settings-content {
+    padding: 2rem;
+    border-radius: 20px;
+  }
+
+  /* Keep form character visible but smaller */
+  .settings-content::before {
+    width: clamp(500px, 45vw, 600px);
+    height: clamp(500px, 45vw, 600px);
+    opacity: 0.08;
+  }
+
+  .settings-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .settings-btn-save,
+  .settings-btn-cancel {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-content {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+
+  /* Make form character smaller on very small screens */
+  .settings-content::before {
+    width: clamp(400px, 40vw, 500px);
+    height: clamp(400px, 40vw, 500px);
+  }
+
+  .settings-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .settings-group input {
+    padding: 1rem 1.5rem;
+    border-radius: 15px;
+  }
+
+  .settings-error-message,
+  .settings-success-message {
+    padding: 1rem 1.5rem;
+    border-radius: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .settings-content {
+    padding: 1rem;
+  }
+
+  .settings-group input {
+    padding: 0.8rem 1.2rem;
+  }
+
+  .settings-btn-save,
+  .settings-btn-cancel {
+    padding: 1rem 2rem;
+  }
+}
+
+/* Loading Animation */
+.settings-content > * {
+  animation-fill-mode: both;
+}
+
+.settings-content > *:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.settings-content > *:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.settings-content > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Special Effects */
+.settings-admin-page * {
+  transition: all 0.3s ease;
+}
+
+/* Form Validation States */
+.settings-group.error input {
+  border-color: var(--error-red);
+  box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
+  animation: settings-input-shake 0.5s ease-out;
+}
+
+.settings-group.success input {
+  border-color: var(--success-green);
+  box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.1);
+}
+
+@keyframes settings-input-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Enhanced Character Integration */
+.settings-content:hover::before {
+  animation-play-state: paused;
+  opacity: 0.15;
+  transform: translateY(-50%) scale(1.02);
+}
+
+/* Password Strength Indicator */
+.settings-password-strength {
+  margin-top: 0.5rem;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.settings-password-strength::before {
+  content: "";
+  display: block;
+  height: 100%;
+  background: var(--gradient-aurora);
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Additional floating elements */
+.settings-content::after {
+  animation: settings-icon-spin 20s linear infinite;
+}
+
+/* Security Badge */
+.settings-security-badge {
+  position: absolute;
+  top: -15px;
+  right: 20px;
+  background: var(--gradient-stellar);
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px var(--shadow-cosmic);
+  animation: settings-badge-pulse 3s ease-in-out infinite;
+}
+
+.settings-security-badge::before {
+  content: "🔒 SECURE";
+}
+
+@keyframes settings-badge-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}

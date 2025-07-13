@@ -3,9 +3,11 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../contexts/ToastContext";
 import "./AddUser.css";
 
 const AddUser = () => {
+  const { showSuccess, showError } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -85,7 +87,7 @@ const AddUser = () => {
         createdBy: auth.currentUser?.email || "Unknown",
       });
 
-      alert(
+      showSuccess(
         `User ${formData.name} created successfully with role: ${formData.role}`
       );
 
@@ -111,7 +113,7 @@ const AddUser = () => {
         errorMessage += error.message;
       }
 
-      alert(errorMessage);
+      showError(errorMessage);
     }
 
     setLoading(false);

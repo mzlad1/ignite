@@ -8,8 +8,10 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import "./Feedback.css";
+import { useToast } from "../contexts/ToastContext";
 
 const Feedback = () => {
+  const { showSuccess, showError } = useToast();
   const [feedback, setFeedback] = useState({
     name: "",
     rating: 5,
@@ -61,12 +63,12 @@ const Feedback = () => {
         likes: 0,
         dislikes: 0,
       });
-      alert("Thank you for your feedback! 🌟");
+      showSuccess("Thank you for your feedback! 🌟");
       setFeedback({ name: "", rating: 5, comment: "" });
       setHoveredRating(0);
       fetchFeedback();
     } catch (error) {
-      alert("Error submitting feedback: " + error.message);
+      showError("Error submitting feedback: " + error.message);
     }
   };
 

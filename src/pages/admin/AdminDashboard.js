@@ -24,10 +24,15 @@ const AdminDashboard = () => {
             <p>Create new user accounts with roles</p>
           </Link>
 
-          <div className="admin-card">
+          <Link to="/admin/manage-users" className="admin-card">
+            <h3>👥 Manage Users</h3>
+            <p>View and manage existing user accounts</p>
+          </Link>
+
+          <Link to="/admin/settings" className="admin-card">
             <h3>⚙️ Settings</h3>
             <p>System configuration</p>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
