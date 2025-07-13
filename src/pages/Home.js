@@ -224,7 +224,7 @@ const Home = () => {
               </p>
             </div>
             <div className="info-image scroll-animate-child">
-              <img src="/images/gettoknowus.jpg" alt="Get to Know Us" />
+              <img src="/images/GetToKnowUs.jpg" alt="Get to Know Us" />
             </div>
           </div>
         </div>
