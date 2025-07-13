@@ -152,13 +152,22 @@ const JanaDashboard = () => {
 
   // Image upload to Cloudinary
   const uploadImageToCloudinary = async (file) => {
+    const cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+    const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
+
+    if (!cloudName || !uploadPreset) {
+      throw new Error(
+        "Cloudinary configuration is missing. Please check your environment variables."
+      );
+    }
+
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "ignite"); // Replace with your Cloudinary upload preset
+    formData.append("upload_preset", uploadPreset);
 
     try {
       const response = await fetch(
-        "https://api.cloudinary.com/v1_1/dxfonorpp/image/upload", // Replace with your cloud name
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         {
           method: "POST",
           body: formData,

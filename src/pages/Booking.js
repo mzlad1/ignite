@@ -469,6 +469,7 @@ const Booking = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
+                    placeholder="your name"
                     required
                   />
                 </div>
@@ -497,6 +498,7 @@ const Booking = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
                     }
+                    placeholder="+970XXXXXXXXX"
                     required
                   />
                 </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { ToastProvider } from "./contexts/ToastContext";
+import { validateEnvironment } from "./config/env";
 
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -22,6 +23,17 @@ import JanaDashboard from "./pages/admin/JanaDashboard";
 import AddUser from "./pages/admin/AddUser";
 import ManageUsers from "./pages/admin/ManageUsers";
 import Settings from "./pages/admin/Settings";
+
+// Validate environment variables on app startup
+try {
+  validateEnvironment();
+} catch (error) {
+  console.error("Environment validation failed:", error.message);
+  // In development, you might want to show a user-friendly error
+  if (process.env.NODE_ENV === "development") {
+    // You could render an error component here instead of throwing
+  }
+}
 
 function App() {
   return (

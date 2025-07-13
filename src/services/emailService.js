@@ -1,11 +1,27 @@
 import emailjs from "@emailjs/browser";
 
-// Initialize EmailJS with your public key
-emailjs.init("3AU1RwSSy_BN9h50e"); // Replace with your EmailJS public key
+// Validate required environment variables
+const requiredEmailEnvVars = [
+  "REACT_APP_EMAILJS_PUBLIC_KEY",
+  "REACT_APP_EMAILJS_SERVICE_ID",
+  "REACT_APP_EMAILJS_TEMPLATE_APPROVAL",
+  "REACT_APP_EMAILJS_TEMPLATE_REJECTION",
+];
 
-const EMAIL_SERVICE_ID = "service_khshse4"; // Replace with your EmailJS service ID
-const EMAIL_TEMPLATE_ID_APPROVAL = "template_6otg3tv"; // Replace with your approval template ID
-const EMAIL_TEMPLATE_ID_REJECTION = "template_a0rqonu"; // Replace with your rejection template ID
+for (const envVar of requiredEmailEnvVars) {
+  if (!process.env[envVar]) {
+    throw new Error(`Missing required environment variable: ${envVar}`);
+  }
+}
+
+// Initialize EmailJS with your public key
+emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY);
+
+const EMAIL_SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+const EMAIL_TEMPLATE_ID_APPROVAL =
+  process.env.REACT_APP_EMAILJS_TEMPLATE_APPROVAL;
+const EMAIL_TEMPLATE_ID_REJECTION =
+  process.env.REACT_APP_EMAILJS_TEMPLATE_REJECTION;
 
 export const sendApprovalEmail = async (bookingDetails) => {
   try {
