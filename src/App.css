@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* Fix viewport height issues on mobile */
+  height: 100%;
+  height: 100dvh;
+}
+
+body {
+  font-family: "Fredoka", sans-serif;
+  background-color: #000000;
+  color: #ffffff;
+  padding-top: 0;
+  /* Ensure body takes full viewport */
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.App {
+  min-height: 100vh;
+}
+
+/* Add padding only to non-home pages */
+.App > div:not(.home) {
+  padding-top: 80px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  .App > div:not(.home) {
+    padding-top: 100px;
+  }
+}

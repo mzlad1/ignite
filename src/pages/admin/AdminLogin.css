@@ -1,0 +1,711 @@
+/* Advanced Admin Login CSS with Enhanced Cosmic Theme and Character Integration */
+
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --cosmic-dark: #0a0b1a;
+  --space-navy: #1a1b2e;
+  --deep-space: #16213e;
+  --aurora-orange: #ff7f00;
+  --energy-amber: #ffa500;
+  --cosmic-gold: #ffd700;
+  --stellar-blue: #4a9fff;
+  --nebula-purple: #6b46c1;
+  --white: #ffffff;
+  --cosmic-gray: #2d3748;
+  --error-red: #e74c3c;
+  --success-green: #27ae60;
+  --shadow-cosmic: rgba(255, 127, 0, 0.1);
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+  --shadow-heavy: rgba(0, 0, 0, 0.5);
+
+  --gradient-cosmic: linear-gradient(
+    135deg,
+    var(--cosmic-dark),
+    var(--space-navy)
+  );
+  --gradient-aurora: linear-gradient(
+    135deg,
+    var(--aurora-orange),
+    var(--energy-amber)
+  );
+  --gradient-stellar: linear-gradient(
+    135deg,
+    var(--stellar-blue),
+    var(--nebula-purple)
+  );
+  --gradient-energy: linear-gradient(
+    135deg,
+    var(--energy-amber),
+    var(--cosmic-gold)
+  );
+}
+
+/* Admin Login Specific Styles - All selectors prefixed with .admin-login */
+.admin-login * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.admin-login {
+  font-family: "Fredoka", sans-serif;
+  background: var(--gradient-cosmic);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 4vw, 3rem);
+}
+
+/* Enhanced Animated Background Elements */
+.admin-login::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 20% 30%,
+      rgba(255, 127, 0, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(255, 165, 0, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 45% 85%,
+      rgba(255, 215, 0, 0.05) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 75% 25%,
+      rgba(74, 159, 255, 0.06) 0%,
+      transparent 50%
+    );
+  animation: admin-login-cosmicFloat 28s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Large Enzo Character - Security Guardian */
+.admin-login::after {
+  content: "";
+  position: absolute;
+  top: 8%;
+  right: -5%;
+  width: clamp(400px, 40vw, 600px);
+  height: clamp(400px, 40vw, 600px);
+  background-image: url("/public/images/Enzo1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.12;
+  animation: admin-login-enzoFloat 16s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Additional Character Decorations */
+.admin-login-zoe-security {
+  position: absolute;
+  bottom: 8%;
+  left: -4%;
+  width: clamp(350px, 32vw, 520px);
+  height: clamp(350px, 32vw, 520px);
+  background-image: url("/public/images/zoe1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+  animation: admin-login-zoeFloat 20s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.admin-login-enzo-guard {
+  position: absolute;
+  top: 35%;
+  left: 5%;
+  width: clamp(140px, 20vw, 200px);
+  height: clamp(140px, 20vw, 200px);
+  background-image: url("/public/images/Enzo3.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.08;
+  animation: admin-login-guardBounce 12s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.admin-login-zoe-assistant {
+  position: absolute;
+  top: 20%;
+  right: 12%;
+  width: clamp(110px, 16vw, 160px);
+  height: clamp(110px, 16vw, 160px);
+  background-image: url("/public/images/zoe2.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.07;
+  animation: admin-login-assistantFloat 14s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes admin-login-cosmicFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-18px) rotate(1.5deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(-1deg);
+  }
+}
+
+@keyframes admin-login-enzoFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translateY(-30px) rotate(4deg) scale(1.04);
+    opacity: 0.18;
+  }
+}
+
+@keyframes admin-login-zoeFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translateY(-25px) rotate(-3deg) scale(1.03);
+    opacity: 0.16;
+  }
+}
+
+@keyframes admin-login-guardBounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-18px) scale(1.1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.05);
+  }
+  75% {
+    transform: translateY(-14px) scale(1.08);
+  }
+}
+
+@keyframes admin-login-assistantFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(5deg);
+  }
+}
+
+/* Enhanced Login Container */
+.admin-login .login-container {
+  background: rgba(26, 27, 46, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: clamp(3rem, 6vw, 4rem);
+  box-shadow: 0 30px 60px var(--shadow-dark),
+    inset 0 1px 0 rgba(255, 127, 0, 0.2);
+  border: 2px solid rgba(255, 127, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: clamp(400px, 90vw, 500px);
+  animation: admin-login-slideInUp 1s ease-out;
+  z-index: 2;
+}
+
+/* Login Container Background Character */
+.admin-login .login-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -15%;
+  transform: translateY(-50%);
+  width: clamp(300px, 40vw, 450px);
+  height: clamp(300px, 40vw, 450px);
+  background-image: url("/public/images/Enzo2.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.06;
+  animation: admin-login-containerCharFloat 15s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Security Icon */
+.admin-login .login-container::after {
+  content: "🔐";
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: clamp(1.5rem, 3vw, 1.8rem);
+  opacity: 0.4;
+  animation: admin-login-securityPulse 6s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes admin-login-slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes admin-login-containerCharFloat {
+  0%,
+  100% {
+    transform: translateY(-50%) scale(1) rotate(0deg);
+    opacity: 0.06;
+  }
+  50% {
+    transform: translateY(-52%) scale(1.04) rotate(2deg);
+    opacity: 0.12;
+  }
+}
+
+@keyframes admin-login-securityPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.15);
+  }
+}
+
+/* Enhanced Title */
+.admin-login .login-container h2 {
+  text-align: center;
+  font-size: clamp(2.2rem, 5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: clamp(2rem, 4vw, 2.5rem);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+  background: var(--gradient-aurora);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.admin-login .login-container h2::before {
+  content: "⚡";
+  position: absolute;
+  left: -clamp(2.5rem, 6vw, 3.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  opacity: 0.7;
+  animation: admin-login-lightningPulse 4s ease-in-out infinite;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
+}
+
+@keyframes admin-login-lightningPulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.2);
+  }
+}
+
+/* Enhanced Form Styling */
+.admin-login .login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2rem);
+  position: relative;
+  z-index: 2;
+}
+
+.admin-login .login-container input {
+  width: 100%;
+  padding: clamp(1.2rem, 3vw, 1.5rem) clamp(1.5rem, 3.5vw, 2rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.2rem);
+  border: 2px solid rgba(255, 127, 0, 0.3);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--cosmic-dark);
+  transition: all 0.3s ease;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
+  box-shadow: 0 8px 20px var(--shadow-cosmic);
+  position: relative;
+}
+
+.admin-login .login-container input::placeholder {
+  color: rgba(45, 55, 72, 0.6);
+  font-style: italic;
+}
+
+.admin-login .login-container input:focus {
+  outline: none;
+  border-color: var(--aurora-orange);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 0 4px rgba(255, 127, 0, 0.1), 0 12px 30px var(--shadow-dark);
+  transform: translateY(-3px);
+}
+
+/* Enhanced Submit Button */
+.admin-login .login-container button {
+  background: var(--gradient-aurora);
+  color: var(--white);
+  border: none;
+  border-radius: 20px;
+  padding: clamp(1.3rem, 3.5vw, 1.6rem) clamp(2rem, 4vw, 2.5rem);
+  font-size: clamp(1.2rem, 2.8vw, 1.4rem);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 15px 35px var(--shadow-cosmic);
+  font-family: "Fredoka", sans-serif;
+  position: relative;
+  overflow: hidden;
+  margin-top: clamp(1rem, 2vw, 1.5rem);
+}
+
+.admin-login .login-container button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.8s;
+}
+
+.admin-login .login-container button:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.admin-login .login-container button:hover:not(:disabled) {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 25px 50px var(--shadow-heavy);
+}
+
+.admin-login .login-container button:active:not(:disabled) {
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* Loading State */
+.admin-login .login-container button:disabled {
+  background: var(--cosmic-gray);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 8px 20px var(--shadow-cosmic);
+  animation: admin-login-loadingPulse 2s ease-in-out infinite;
+}
+
+@keyframes admin-login-loadingPulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Enhanced Register Link */
+.admin-login .login-container p {
+  text-align: center;
+  font-size: clamp(1rem, 2.2vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+  position: relative;
+  z-index: 2;
+  font-weight: 500;
+}
+
+.admin-login .login-container a {
+  color: var(--cosmic-gold);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+}
+
+.admin-login .login-container a::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gradient-energy);
+  transition: width 0.3s ease;
+}
+
+.admin-login .login-container a:hover {
+  color: var(--white);
+  background: rgba(255, 215, 0, 0.1);
+  text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.admin-login .login-container a:hover::before {
+  width: 100%;
+}
+
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 1200px) {
+  /* Adjust character sizes for tablets */
+  .admin-login::after {
+    width: clamp(320px, 35vw, 450px);
+    height: clamp(320px, 35vw, 450px);
+  }
+
+  .admin-login-zoe-security {
+    width: clamp(280px, 28vw, 400px);
+    height: clamp(280px, 28vw, 400px);
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-login {
+    padding: 2rem 1.5rem;
+  }
+
+  /* Keep main characters but smaller */
+  .admin-login::after {
+    width: clamp(280px, 30vw, 380px);
+    height: clamp(280px, 30vw, 380px);
+    top: 10%;
+    right: -8%;
+  }
+
+  .admin-login-zoe-security {
+    width: clamp(220px, 25vw, 320px);
+    height: clamp(220px, 25vw, 320px);
+    bottom: 10%;
+    left: -8%;
+  }
+
+  .admin-login-enzo-guard {
+    width: clamp(100px, 15vw, 140px);
+    height: clamp(100px, 15vw, 140px);
+  }
+
+  .admin-login-zoe-assistant {
+    width: clamp(80px, 12vw, 120px);
+    height: clamp(80px, 12vw, 120px);
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-login {
+    padding: 1.5rem 1rem;
+  }
+
+  /* Hide large background characters on mobile for performance */
+  .admin-login::after,
+  .admin-login-zoe-security,
+  .admin-login-enzo-guard,
+  .admin-login-zoe-assistant {
+    display: none;
+  }
+
+  .admin-login .login-container {
+    padding: 2.5rem;
+    border-radius: 25px;
+    max-width: 100%;
+  }
+
+  .admin-login .login-container h2::before {
+    left: -2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-login {
+    padding: 1rem 0.8rem;
+  }
+
+  .admin-login .login-container {
+    padding: 2rem;
+    border-radius: 20px;
+  }
+
+  .admin-login .login-container h2::before {
+    display: none;
+  }
+
+  .admin-login .login-container input {
+    padding: 1.2rem 1.5rem;
+    border-radius: 15px;
+  }
+
+  .admin-login .login-container button {
+    padding: 1.3rem 2rem;
+    border-radius: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .admin-login .login-container {
+    padding: 1.5rem;
+  }
+
+  .admin-login .login-container input {
+    padding: 1rem 1.2rem;
+  }
+
+  .admin-login .login-container button {
+    padding: 1.1rem 1.5rem;
+  }
+}
+
+/* Enhanced Character Integration on Hover */
+.admin-login:hover .admin-login-zoe-security {
+  animation-play-state: paused;
+  opacity: 0.15;
+  transform: scale(1.02);
+}
+
+.admin-login:hover .admin-login-enzo-guard {
+  animation-play-state: paused;
+  opacity: 0.12;
+  transform: scale(1.06);
+}
+
+.admin-login .login-container:hover::before {
+  animation-play-state: paused;
+  opacity: 0.12;
+  transform: translateY(-50%) scale(1.03);
+}
+
+/* Additional Security Elements */
+.admin-login-security-badge {
+  position: absolute;
+  top: 15%;
+  right: 15%;
+  font-size: 1.8rem;
+  opacity: 0.3;
+  animation: admin-login-securityFloat 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.admin-login-security-badge::before {
+  content: "🛡️";
+}
+
+.admin-login-admin-badge {
+  position: absolute;
+  bottom: 20%;
+  right: 20%;
+  font-size: 1.5rem;
+  opacity: 0.4;
+  animation: admin-login-securityFloat 6s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.admin-login-admin-badge::before {
+  content: "⚙️";
+}
+
+@keyframes admin-login-securityFloat {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-10px) rotate(5deg);
+  }
+}
+
+/* Focus States for Accessibility */
+.admin-login .login-container input:focus,
+.admin-login .login-container button:focus,
+.admin-login .login-container a:focus {
+  outline: 2px solid var(--stellar-blue);
+  outline-offset: 2px;
+}
+
+/* Form Validation States */
+.admin-login .login-container input.error {
+  border-color: var(--error-red);
+  box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
+}
+
+.admin-login .login-container input.success {
+  border-color: var(--success-green);
+  box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.1);
+}
+
+/* Loading Spinner for Button */
+.admin-login .login-container button:disabled::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid var(--white);
+  border-radius: 50%;
+  animation: admin-login-spin 1s linear infinite;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@keyframes admin-login-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Additional decoration elements */
+.admin-login-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
