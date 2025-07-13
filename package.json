@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
-    "firebase": "^9.17.0",
-    "react": "^18.2.0",
+    "firebase": "^11.10.0",
+    "react": "^19.1.0",
     "react-calendar": "^4.0.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.0",
