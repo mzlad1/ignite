@@ -417,7 +417,6 @@
   background: rgba(26, 27, 46, 0.95);
   backdrop-filter: blur(20px);
   border-radius: 25px;
-  padding: clamp(2rem, 4vw, 2.5rem);
   box-shadow: 0 25px 50px var(--shadow-dark),
     inset 0 1px 0 rgba(255, 127, 0, 0.2);
   border: 2px solid rgba(255, 127, 0, 0.3);
@@ -427,6 +426,9 @@
   cursor: pointer;
   animation: menu-itemSlideIn 0.6s ease-out;
   text-align: center;
+  height: auto;
+  margin: 0 auto;
+  max-width: 320px;
 }
 
 .menu .menu-item::before {
@@ -469,11 +471,9 @@
 .menu .menu-item:hover::after {
   right: -10%;
   opacity: 0.8;
-  transform: translateY(-50%) scale(1.2);
 }
 
 .menu .menu-item:hover {
-  transform: translateY(-8px) scale(1.03);
   border-color: var(--aurora-orange);
   box-shadow: 0 35px 70px var(--shadow-heavy), 0 0 30px rgba(255, 127, 0, 0.3);
 }
@@ -491,7 +491,6 @@
 
 /* Enhanced Item Image */
 .menu .item-image {
-  margin-bottom: clamp(1.5rem, 3vw, 2rem);
   position: relative;
   z-index: 2;
   display: flex;
@@ -585,6 +584,94 @@
   animation-delay: 0.9s;
 }
 
+/* Replace the .menu .menu-grid styles with carousel styles */
+.menu .menu-carousel-container {
+  position: relative;
+  animation: menu-gridFadeIn 1s ease-out 0.5s both;
+}
+
+.menu .menu-carousel-item {
+  padding: 0 clamp(0.5rem, 1vw, 1rem);
+}
+
+/* Custom Carousel Navigation Arrows */
+.menu .react-multiple-carousel__arrow {
+  background: rgba(255, 127, 0, 0.9) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  min-width: 45px !important;
+  min-height: 45px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.3s ease !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.menu .react-multiple-carousel__arrow:hover {
+  background: var(--aurora-orange) !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 12px 35px rgba(255, 127, 0, 0.4) !important;
+}
+
+.menu .react-multiple-carousel__arrow::before {
+  color: white !important;
+  font-size: clamp(16px, 2.5vw, 20px) !important;
+  font-weight: bold !important;
+}
+
+.menu .react-multiple-carousel__arrow--left {
+  left: clamp(10px, 2vw, 20px) !important;
+}
+
+.menu .react-multiple-carousel__arrow--right {
+  right: clamp(10px, 2vw, 20px) !important;
+}
+
+/* Custom Carousel Dots */
+.menu .custom-dot-list-style {
+  position: absolute !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  list-style: none !important;
+}
+
+.menu .custom-dot-list-style li {
+  margin: 0 !important;
+}
+
+.menu .custom-dot-list-style button {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  border: 2px solid rgba(255, 127, 0, 0.5) !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  outline: none !important;
+}
+
+.menu .custom-dot-list-style button:hover {
+  border-color: var(--aurora-orange) !important;
+  background: rgba(255, 127, 0, 0.3) !important;
+  transform: scale(1.2) !important;
+}
+
+.menu .custom-dot-list-style .react-multi-carousel-dot--active button {
+  background: var(--aurora-orange) !important;
+  border-color: var(--aurora-orange) !important;
+  box-shadow: 0 0 15px rgba(255, 127, 0, 0.6) !important;
+  transform: scale(1.3) !important;
+}
+
+/* Carousel Container Spacing */
+.menu .menu-carousel-container {
+  padding-bottom: 80px;
+}
+
 /* Enhanced Mobile Responsiveness */
 @media (max-width: 1200px) {
   .menu .menu-grid {
@@ -676,6 +763,32 @@
     border-radius: 15px;
     margin-bottom: 2.5rem;
   }
+
+  .menu .menu-carousel {
+    padding: 0 0.5rem;
+  }
+
+  .menu .menu-carousel-item {
+    padding: 0 0.3rem;
+  }
+
+  .menu .custom-dot-list-style {
+    bottom: -50px !important;
+    gap: 8px !important;
+  }
+
+  .menu .custom-dot-list-style button {
+    width: 10px !important;
+    height: 10px !important;
+  }
+
+  .menu .react-multiple-carousel__arrow {
+    display: none !important;
+  }
+
+  .menu .menu-carousel-container {
+    padding-bottom: 60px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -718,6 +831,15 @@
   .menu .item-image img {
     height: 100px;
     border-radius: 12px;
+  }
+
+  .menu .custom-dot-list-style {
+    bottom: -40px !important;
+    gap: 6px !important;
+  }
+
+  .menu .menu-carousel-container {
+    padding-bottom: 50px;
   }
 }
 

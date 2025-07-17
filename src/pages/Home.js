@@ -19,6 +19,7 @@ const Home = () => {
   const titleText = "Welcome to Ignite Arcade";
   const subtitleTexts = [
     "Where Fun Meets Adventure!",
+    "Your Ultimate Entertainment Destination",
     "Strike Up Some Fun!",
     "Level Up Your Game Experience!",
     "Create Unforgettable Memories!",

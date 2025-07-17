@@ -61,13 +61,20 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
   }
 
   if (requiredRole && userRole !== requiredRole) {
-    // Redirect to appropriate dashboard based on user role
-    if (userRole === "jana") {
-      return <Navigate to="/admin/dashboard" replace />;
-    } else if (userRole === "reception") {
-      return <Navigate to="/admin/calendar" replace />;
-    } else {
-      return <Navigate to="/admin" replace />;
+    // Check if requiredRole is an array and if user role is included
+    const hasRequiredRole = Array.isArray(requiredRole)
+      ? requiredRole.includes(userRole)
+      : userRole === requiredRole;
+
+    if (!hasRequiredRole) {
+      // Redirect to appropriate dashboard based on user role
+      if (userRole === "jana") {
+        return <Navigate to="/admin/dashboard" replace />;
+      } else if (userRole === "reception") {
+        return <Navigate to="/admin/calendar" replace />;
+      } else {
+        return <Navigate to="/admin" replace />;
+      }
     }
   }
 

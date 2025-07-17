@@ -1,19 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.a30105e0.css",
-    "main.js": "/static/js/main.da93d4af.js",
+    "main.css": "/static/css/main.d0fa7f5e.css",
+    "main.js": "/static/js/main.f1ab21a9.js",
     "static/media/Enzo1.png": "/static/media/Enzo1.5c2db688f25cef24ff71.png",
     "static/media/Enzo3.png": "/static/media/Enzo3.9e8891a024c130eb8b10.png",
     "static/media/HeroImage.jpg": "/static/media/HeroImage.4e10d75aa9487e374a73.jpg",
     "static/media/Enzo2.png": "/static/media/Enzo2.0d22d9e42955a016991c.png",
     "static/media/zoe1.png": "/static/media/zoe1.b396354472ff3fe11cd5.png",
     "static/media/zoe2.png": "/static/media/zoe2.f35693ecacbb28866e65.png",
+    "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
+    "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.a30105e0.css.map": "/static/css/main.a30105e0.css.map",
-    "main.da93d4af.js.map": "/static/js/main.da93d4af.js.map"
+    "main.d0fa7f5e.css.map": "/static/css/main.d0fa7f5e.css.map",
+    "main.f1ab21a9.js.map": "/static/js/main.f1ab21a9.js.map"
   },
   "entrypoints": [
-    "static/css/main.a30105e0.css",
-    "static/js/main.da93d4af.js"
+    "static/css/main.d0fa7f5e.css",
+    "static/js/main.f1ab21a9.js"
   ]
 }

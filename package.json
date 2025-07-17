@@ -5,9 +5,11 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "firebase": "^11.10.0",
+    "lucide-react": "^0.525.0",
     "react": "^18.3.1",
     "react-calendar": "^4.0.0",
     "react-dom": "^18.3.1",
+    "react-multi-carousel": "^2.8.6",
     "react-router-dom": "^6.8.0",
     "react-scripts": "5.0.1"
   },

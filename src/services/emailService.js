@@ -33,8 +33,8 @@ export const sendApprovalEmail = async (bookingDetails) => {
     const templateParams = {
       to_email: bookingDetails.email.trim(),
       to_name: bookingDetails.name,
-      from_name: "Bowling Center Team",
-      reply_to: "noreply@bowlingcenter.com", // Replace with your business email
+      from_name: "Ignite Team",
+      reply_to: "ignite@gmail.com", // Replace with your business email
       subject: `✅ Bowling Booking Confirmed - ${bookingDetails.date}`,
       booking_date: bookingDetails.date,
       booking_time: bookingDetails.time,
@@ -75,8 +75,8 @@ export const sendRejectionEmail = async (bookingDetails, reason = "") => {
     const templateParams = {
       to_email: bookingDetails.email.trim(),
       to_name: bookingDetails.name,
-      from_name: "Bowling Center Team",
-      reply_to: "noreply@bowlingcenter.com", // Replace with your business email
+      from_name: "Ignite Team",
+      reply_to: "ignite@gmail.com", // Replace with your business email
       subject: `❌ Bowling Booking Update - ${bookingDetails.date}`,
       booking_date: bookingDetails.date,
       booking_time: bookingDetails.time,
@@ -116,7 +116,7 @@ export const testEmailService = async () => {
     const testParams = {
       to_email: "test@example.com",
       to_name: "Test User",
-      from_name: "Bowling Center Team",
+      from_name: "Ignite Team",
       subject: "Test Email",
       message: "This is a test email to verify EmailJS setup.",
     };

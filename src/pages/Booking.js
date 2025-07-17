@@ -204,6 +204,7 @@ const Booking = () => {
       bundleName: pkg.title,
       bundlePrice: pkg.price,
       duration: pkg.duration,
+      people: pkg.maxPeople, // Automatically set people count to package max
     });
   };
 
@@ -505,25 +506,27 @@ const Booking = () => {
               </div>
 
               <div className="form-right-column">
-                <div className="form-group">
-                  <label>Number of People (max 6):</label>
-                  <div className="number-selector">
-                    {[1, 2, 3, 4, 5, 6].map((num) => (
-                      <button
-                        key={num}
-                        type="button"
-                        className={`number-box ${
-                          formData.people === num ? "selected" : ""
-                        }`}
-                        onClick={() =>
-                          setFormData({ ...formData, people: num })
-                        }
-                      >
-                        {num}
-                      </button>
-                    ))}
+                {bookingType === "regular" && (
+                  <div className="form-group">
+                    <label>Number of People (max 6):</label>
+                    <div className="number-selector">
+                      {[1, 2, 3, 4, 5, 6].map((num) => (
+                        <button
+                          key={num}
+                          type="button"
+                          className={`number-box ${
+                            formData.people === num ? "selected" : ""
+                          }`}
+                          onClick={() =>
+                            setFormData({ ...formData, people: num })
+                          }
+                        >
+                          {num}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {bookingType === "regular" && (
                   <div className="form-group">
@@ -671,7 +674,6 @@ const Booking = () => {
                 <li>🎉 Birthday packages include multiple activities</li>
                 <li>🎳 Extended bowling sessions</li>
                 <li>🥽 VR gaming sessions included</li>
-                <li>🍕 Food & drinks included in some packages</li>
                 <li>📞 For cancellation: 0566164488</li>
               </ul>
             )}

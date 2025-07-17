@@ -73,7 +73,7 @@ function App() {
             <Route
               path="/admin/calendar"
               element={
-                <ProtectedRoute requiredRole="reception">
+                <ProtectedRoute requiredRole={["reception", "jana"]}>
                   <ReceptionCalendar />
                 </ProtectedRoute>
               }
