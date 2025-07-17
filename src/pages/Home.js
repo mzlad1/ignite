@@ -16,7 +16,7 @@ const Home = () => {
   const zoneCardsRef = useRef([]);
   const footerRef = useRef(null);
 
-  const titleText = "Welcome to Ignite Arcade";
+  const titleText = "Welcome to IGNITE";
   const subtitleTexts = [
     "Where Fun Meets Adventure!",
     "Your Ultimate Entertainment Destination",
