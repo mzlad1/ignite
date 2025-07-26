@@ -1473,6 +1473,7 @@ const JanaDashboard = () => {
           width: 90%;
           max-height: 90vh;
           overflow-y: auto;
+          animation: slideIn 0.3s ease-out;
         }
 
         .rejection-modal-header {

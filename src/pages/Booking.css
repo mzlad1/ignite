@@ -71,22 +71,12 @@ body {
   bottom: 0;
   background: radial-gradient(
       circle at 15% 25%,
-      rgba(255, 127, 0, 0.08) 0%,
+      rgba(255, 127, 0, 0.04) 0%,
       transparent 50%
     ),
     radial-gradient(
       circle at 85% 75%,
-      rgba(255, 165, 0, 0.08) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 45% 85%,
-      rgba(255, 215, 0, 0.05) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 70% 30%,
-      rgba(74, 159, 255, 0.06) 0%,
+      rgba(255, 165, 0, 0.04) 0%,
       transparent 50%
     );
   animation: cosmicFloat 30s ease-in-out infinite;
@@ -1365,4 +1355,75 @@ body {
 
 .number-box:active {
   transform: translateY(-1px) scale(1.02);
+}
+
+/* Mobile-first performance optimizations */
+@media (max-width: 768px) {
+  /* Disable all heavy animations */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.1s !important;
+  }
+
+  /* Hide all decorative background elements */
+  .booking::before,
+  .booking::after,
+  .booking-zoe-main,
+  .booking-enzo-helper,
+  .booking-zoe-helper {
+    display: none !important;
+  }
+
+  /* Remove form background characters */
+  .booking-form::before,
+  .booking-form::after {
+    display: none !important;
+  }
+
+  /* Simplify gradients */
+  .booking-form {
+    background: rgba(26, 27, 46, 0.95);
+    backdrop-filter: none;
+  }
+
+  /* Remove complex shadows */
+  .type-btn,
+  .bundle-option,
+  .booking-form {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Optimize transforms */
+  .type-btn:hover,
+  .bundle-option:hover {
+    transform: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further mobile optimizations */
+  .booking {
+    will-change: auto;
+  }
+
+  /* Remove all backdrop filters */
+  .booking-form,
+  .calendar-section,
+  .time-slots {
+    backdrop-filter: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Respect user's motion preferences */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

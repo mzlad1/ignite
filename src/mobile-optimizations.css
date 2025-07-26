@@ -1,0 +1,90 @@
+/* Mobile-First Performance Optimizations */
+
+/* Hide all decorative elements on mobile */
+@media (max-width: 768px) {
+  .floating-character,
+  .background-character,
+  .decorative-element,
+  [class*="character"]:not(.main-content),
+  [class*="floating"]:not(.main-content),
+  [class*="background"]:not(.main-content) {
+    display: none !important;
+  }
+
+  /* Simplify all animations */
+  @keyframes simple-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Override complex animations with simple ones */
+  [class*="float"],
+  [class*="bounce"],
+  [class*="slide"] {
+    animation: simple-fade 0.3s ease-out !important;
+  }
+
+  /* Remove heavy CSS properties */
+  * {
+    text-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* Optimize background images */
+  *[style*="background-image"] {
+    background-image: none !important;
+  }
+
+  /* Simplify borders and shadows */
+  * {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 8px !important;
+  }
+}
+
+/* Critical performance for very slow devices */
+@media (max-width: 480px) {
+  /* Remove all non-essential visual effects */
+  *,
+  *::before,
+  *::after {
+    background-image: none !important;
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    transform: none !important;
+  }
+
+  /* Minimal transitions only */
+  * {
+    transition: opacity 0.1s ease !important;
+  }
+
+  /* Optimize fonts */
+  * {
+    font-weight: 400 !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600 !important;
+  }
+}
+
+/* Network-aware optimizations */
+@media (max-width: 768px) and (max-bandwidth: 1mbps) {
+  /* Very slow connection optimizations */
+  .heavy-animation,
+  .complex-gradient,
+  .background-video {
+    display: none !important;
+  }
+}

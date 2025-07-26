@@ -539,7 +539,7 @@
     transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(-10px) rotate(3deg);
+    transform: translateY(-5px) rotate(1deg);
   }
 }
 
@@ -562,38 +562,6 @@
 }
 
 /* Enhanced Info Section */
-.info {
-  background: linear-gradient(
-    135deg,
-    var(--cosmic-dark) 0%,
-    var(--space-navy) 50%,
-    var(--deep-space) 100%
-  );
-  padding: 8rem 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.info::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-      circle at 25% 25%,
-      rgba(255, 127, 0, 0.08) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 75% 75%,
-      rgba(255, 165, 0, 0.08) 0%,
-      transparent 50%
-    );
-  animation: pulseBackground 15s ease-in-out infinite;
-  z-index: 1;
-}
 
 @keyframes pulseBackground {
   0%,
@@ -601,7 +569,7 @@
     opacity: 0.5;
   }
   50% {
-    opacity: 0.8;
+    opacity: 0.6;
   }
 }
 
@@ -617,18 +585,30 @@
   background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo1_wxl5jb.png");
   background-size: contain;
   background-repeat: no-repeat;
-  opacity: 0.05;
-  animation: rotateSlowly 30s linear infinite;
+  opacity: 0.08;
+  animation: gentleFloat 8s ease-in-out infinite;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
-@keyframes rotateSlowly {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
+/* Mobile performance optimizations */
+@media (max-width: 768px) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
+
+  .info::before,
+  .info::after {
+    display: none !important;
+  }
+
+  .zone-content h3,
+  .zone-content p {
+    will-change: auto;
   }
 }
 

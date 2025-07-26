@@ -92,7 +92,7 @@ const Navbar = () => {
       <div className="nav-container">
         <Link to="/" className="nav-logo" onClick={closeMobileMenu}>
           <img
-            src="/images/logo.png"
+            src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546487/logo_gdmnno.png"
             alt="Ignite Arcade"
             className="nav-logo-img"
           />

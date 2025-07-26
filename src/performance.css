@@ -1,0 +1,78 @@
+/* Global Performance Optimizations */
+
+/* Critical performance improvements for mobile devices */
+@media (max-width: 768px) {
+  /* Disable all complex animations on mobile */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.1s !important;
+    transition-delay: 0s !important;
+  }
+
+  /* Remove heavy visual effects */
+  * {
+    backdrop-filter: none !important;
+    filter: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Optimize transforms */
+  *:hover {
+    transform: none !important;
+  }
+
+  /* Remove complex gradients */
+  .gradient-heavy {
+    background: var(--cosmic-dark) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Ultra-lightweight mode for very small screens */
+  * {
+    will-change: auto !important;
+  }
+
+  /* Remove all background images on very small screens */
+  *::before,
+  *::after {
+    background-image: none !important;
+  }
+}
+
+/* Respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Optimize for slow connections */
+@media (max-width: 768px) and (max-resolution: 150dpi) {
+  /* Low-resolution optimizations */
+  .character-background,
+  .decorative-element {
+    display: none !important;
+  }
+}
+
+/* GPU acceleration optimizations */
+.performance-critical {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Remove on mobile */
+@media (max-width: 768px) {
+  .performance-critical {
+    will-change: auto;
+    transform: none;
+  }
+}

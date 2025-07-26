@@ -93,21 +93,6 @@
   pointer-events: none;
 }
 
-.offers-enzo-small {
-  position: absolute;
-  top: 30%;
-  left: 3%;
-  width: clamp(80px, 12vw, 150px);
-  height: clamp(80px, 12vw, 150px);
-  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo3_dsudbe.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0.1;
-  animation: smallCharacterBounce 10s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-
 @keyframes offers-cosmicFloat {
   0%,
   100% {
@@ -149,9 +134,6 @@
   0%,
   100% {
     transform: translateY(0) scale(1);
-  }
-  25% {
-    transform: translateY(-25px) scale(1.1);
   }
   50% {
     transform: translateY(-15px) scale(1.05);
@@ -731,8 +713,7 @@
 
   /* Hide large background characters on tablets for performance */
   .offers::after,
-  .offers-zoe-decoration,
-  .offers-enzo-small {
+  .offers-zoe-decoration {
     display: none;
   }
 
@@ -759,9 +740,29 @@
     transform: rotate(90deg);
     flex: 0 0 40px;
   }
+
+  /* Disable all animations on mobile for better performance */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Reduce opacity and hide decorative elements */
+  .offers-page::before,
+  .offers-page::after {
+    display: none !important;
+  }
 }
 
 @media (max-width: 480px) {
+  /* Further optimizations for very small screens */
+  .offers-page {
+    will-change: auto;
+  }
+
   .offers-container {
     padding: 0 0.8rem;
   }

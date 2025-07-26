@@ -30,18 +30,25 @@ const Offers = () => {
 
   return (
     <div className="offers-page">
-      <div className="offers-enzo-small"></div>
       <div className="offers-container">
         <h1>🌟 Special Offers & Loyalty Program</h1>
 
         <div className="characters-intro">
           <div className="character-card">
-            <img src="/images/Enzo1.png" alt="Enzo" className="character-img" />
+            <img
+              src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo1_wxl5jb.png"
+              alt="Enzo"
+              className="character-img"
+            />
             <h3>Meet Enzo!</h3>
             <p>Your bowling buddy who loves rewards!</p>
           </div>
           <div className="character-card">
-            <img src="/images/zoe1.png" alt="Zoe" className="character-img" />
+            <img
+              src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe1_uqewcu.png"
+              alt="Zoe"
+              className="character-img"
+            />
             <h3>Meet Zoe!</h3>
             <p>She'll help you earn amazing points!</p>
           </div>

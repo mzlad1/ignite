@@ -30,8 +30,6 @@ const FAQ = () => {
     <div className="faq-page">
       {/* Character Decorations */}
       <div className="faq-zoe-main"></div>
-      <div className="faq-enzo-helper"></div>
-      <div className="faq-zoe-helper"></div>
 
       <div className="container">
         <h1>❓ Frequently Asked Questions</h1>

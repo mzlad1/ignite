@@ -965,7 +965,7 @@
   .feedback-page .feedback-form::before {
     width: 400px;
     height: 400px;
-    opacity: 1;
+    opacity: 0.1;
   }
 
   .feedback-page .feedback-list::before {
@@ -1059,7 +1059,7 @@
   .feedback-page .feedback-form::before {
     width: 400px;
     height: 400px;
-    opacity: 1;
+    opacity: 0.1;
   }
 
   .feedback-page .feedback-list::before {
