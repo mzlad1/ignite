@@ -127,7 +127,7 @@ const Home = () => {
           <div className="hero-content">
             <div className="logo-container">
               <img
-                src="/images/logo.png"
+                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546487/logo_gdmnno.png"
                 alt="Ignite Arcade Logo"
                 className="hero-logo"
               />
@@ -162,7 +162,10 @@ const Home = () => {
             ref={(el) => (zoneCardsRef.current[0] = el)}
           >
             <div className="zone-image">
-              <img src="/images/VRhome.jpg" alt="VR Games Zone" />
+              <img
+                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/VRhome_ms1faz.jpg"
+                alt="VR Games Zone"
+              />
             </div>
             <div className="zone-content">
               <h3>🥽 VR Games Zone</h3>
@@ -179,7 +182,10 @@ const Home = () => {
             ref={(el) => (zoneCardsRef.current[1] = el)}
           >
             <div className="zone-image">
-              <img src="/images/bowlingHome.jpg" alt="Bowling Zone" />
+              <img
+                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/bowlingHome_zbbdgm.jpg"
+                alt="Bowling Zone"
+              />
             </div>
             <div className="zone-content">
               <h3>🎳 Bowling Zone</h3>
@@ -196,7 +202,10 @@ const Home = () => {
             ref={(el) => (zoneCardsRef.current[2] = el)}
           >
             <div className="zone-image">
-              <img src="/images/CafeHome.jpg" alt="Grab & Giggle Café" />
+              <img
+                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/CafeHome_ouvnt9.jpg"
+                alt="Grab & Giggle Café"
+              />
             </div>
             <div className="zone-content">
               <h3>☕ Grab & Giggle Café</h3>
@@ -225,7 +234,10 @@ const Home = () => {
               </p>
             </div>
             <div className="info-image scroll-animate-child">
-              <img src="/images/GetToKnowUs.jpg" alt="Get to Know Us" />
+              <img
+                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546487/GetToKnowUs_x3wsox.jpg"
+                alt="Get to Know Us"
+              />
             </div>
           </div>
         </div>
@@ -236,7 +248,7 @@ const Home = () => {
           <div className="footer-content">
             <div className="footer-left scroll-animate-child">
               <img
-                src="/images/logo.png"
+                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546487/logo_gdmnno.png"
                 alt="Ignite Arcade"
                 className="footer-logo"
               />

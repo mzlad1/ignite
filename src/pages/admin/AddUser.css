@@ -98,7 +98,7 @@
   right: -3%;
   width: clamp(420px, 38vw, 620px);
   height: clamp(420px, 38vw, 620px);
-  background-image: url("/public/images/Enzo1.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo1_wxl5jb.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.13;
@@ -114,7 +114,7 @@
   left: -2%;
   width: clamp(370px, 32vw, 530px);
   height: clamp(370px, 32vw, 530px);
-  background-image: url("/public/images/zoe1.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe1_uqewcu.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.11;
@@ -129,7 +129,7 @@
   left: 4%;
   width: clamp(140px, 20vw, 190px);
   height: clamp(140px, 20vw, 190px);
-  background-image: url("/public/images/Enzo3.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo3_dsudbe.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.09;
@@ -144,7 +144,7 @@
   right: 10%;
   width: clamp(110px, 16vw, 150px);
   height: clamp(110px, 16vw, 150px);
-  background-image: url("/public/images/zoe2.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe2_vzrhaz.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.08;
@@ -333,7 +333,7 @@
   transform: translateY(-50%);
   width: clamp(280px, 35vw, 420px);
   height: clamp(280px, 35vw, 420px);
-  background-image: url("/public/images/Enzo2.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo2_cfjkjs.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.06;
@@ -561,7 +561,7 @@
   left: -10%;
   width: clamp(250px, 30vw, 380px);
   height: clamp(250px, 30vw, 380px);
-  background-image: url("/public/images/zoe2.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe2_vzrhaz.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.07;

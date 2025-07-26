@@ -128,8 +128,19 @@ const Navbar = () => {
             Book Now
           </Link>
 
+          {/* Mobile: Show as regular links */}
+          <div className="mobile-only">
+            <Link to="/feedback" className="nav-link" onClick={closeMobileMenu}>
+              Feedback
+            </Link>
+            <Link to="/faq" className="nav-link" onClick={closeMobileMenu}>
+              FAQ
+            </Link>
+          </div>
+
+          {/* Desktop: Show as dropdown */}
           <div
-            className="support-dropdown"
+            className="support-dropdown desktop-only"
             onMouseEnter={() => setSupportDropdownOpen(true)}
             onMouseLeave={() => setSupportDropdownOpen(false)}
           >
@@ -137,6 +148,7 @@ const Navbar = () => {
               className="nav-link support-toggle"
               onClick={toggleSupportDropdown}
             >
+              Support
               <span className="dropdown-arrow">▼</span>
             </button>
             <div

@@ -89,7 +89,7 @@
   right: -6%;
   width: clamp(450px, 40vw, 650px);
   height: clamp(450px, 40vw, 650px);
-  background-image: url("/public/images/zoe1.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe1_uqewcu.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.12;
@@ -105,7 +105,7 @@
   left: -8%;
   width: clamp(350px, 30vw, 500px);
   height: clamp(350px, 30vw, 500px);
-  background-image: url("/public/images/Enzo2.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo2_cfjkjs.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.1;
@@ -450,7 +450,7 @@
   transform: translateY(-50%);
   width: clamp(400px, 35vw, 600px);
   height: clamp(400px, 35vw, 600px);
-  background-image: url("/public/images/Enzo3.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo3_dsudbe.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

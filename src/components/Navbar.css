@@ -205,6 +205,15 @@
   color: #fcbf20;
 }
 
+/* Mobile/Desktop visibility controls */
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: block;
+}
+
 /* Tablet Styles */
 @media (max-width: 1024px) {
   .nav-menu {
@@ -340,6 +349,16 @@
     z-index: 999;
     opacity: 0;
     animation: fadeIn 0.3s ease forwards;
+  }
+
+  .mobile-only {
+    display: contents;
+    margin-top: 1rem;
+  }
+
+
+  .desktop-only {
+    display: none;
   }
 
   @keyframes fadeIn {

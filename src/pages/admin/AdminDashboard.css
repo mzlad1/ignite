@@ -95,7 +95,7 @@
   right: -2%;
   width: clamp(450px, 40vw, 650px);
   height: clamp(450px, 40vw, 650px);
-  background-image: url("/public/images/Enzo1.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo1_wxl5jb.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.15;
@@ -111,7 +111,7 @@
   left: -3%;
   width: clamp(380px, 32vw, 550px);
   height: clamp(380px, 32vw, 550px);
-  background-image: url("/public/images/zoe1.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe1_uqewcu.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.12;
@@ -126,7 +126,7 @@
   left: 3%;
   width: clamp(140px, 20vw, 200px);
   height: clamp(140px, 20vw, 200px);
-  background-image: url("/public/images/Enzo3.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo3_dsudbe.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.09;
@@ -141,7 +141,7 @@
   right: 10%;
   width: clamp(110px, 16vw, 160px);
   height: clamp(110px, 16vw, 160px);
-  background-image: url("/public/images/zoe2.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe2_vzrhaz.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.07;

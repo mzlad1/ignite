@@ -55,7 +55,8 @@
 .hero-background {
   width: 100%;
   height: 100vh;
-  background: url("/public/images/HeroImage.jpg") center/cover no-repeat;
+  background: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546487/HeroImage_uysnmu.jpg")
+    center/cover no-repeat;
   position: relative;
   display: flex;
   align-items: center;
@@ -326,7 +327,7 @@
   right: 5%;
   width: 150px;
   height: 150px;
-  background-image: url("/public/images/Enzo1.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo1_wxl5jb.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.12;
@@ -525,7 +526,7 @@
   right: 20px;
   width: 60px;
   height: 60px;
-  background-image: url("/public/images/zoe1.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe1_uqewcu.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.1;
@@ -613,7 +614,7 @@
   transform: translate(-50%, -50%);
   width: 400px;
   height: 400px;
-  background-image: url("/public/images/Enzo1.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo1_wxl5jb.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.05;
@@ -781,7 +782,7 @@
   left: 5%;
   width: 100px;
   height: 100px;
-  background-image: url("/public/images/zoe2.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe2_vzrhaz.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.08;
