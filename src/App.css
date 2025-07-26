@@ -8,6 +8,8 @@ html {
   /* Fix viewport height issues on mobile */
   height: 100%;
   height: 100dvh;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -19,6 +21,8 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   min-height: -webkit-fill-available;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 .container {
