@@ -412,7 +412,7 @@
   transform: translateY(-50%);
   width: clamp(350px, 40vw, 500px);
   height: clamp(350px, 40vw, 500px);
-  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe2_vzrhaz.png");
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload_v1753546803/zoe2_vzrhaz.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.05;
@@ -629,6 +629,101 @@
   background: var(--aurora-orange);
 }
 
+/* Performance Optimizations for Menu Section */
+.jana-dashboard .menu-list-container {
+  contain: layout style paint;
+  will-change: scroll-position;
+}
+
+.jana-dashboard .menu-card {
+  contain: layout style paint;
+  transform: translateZ(0); /* Force hardware acceleration */
+  backface-visibility: hidden;
+}
+
+.jana-dashboard .lazy-image-container {
+  contain: layout;
+  transform: translateZ(0);
+}
+
+/* Improved Menu Item Images */
+.jana-dashboard .menu-item-image {
+  will-change: opacity;
+  transition: opacity 0.3s ease;
+}
+
+/* Enhanced Menu Controls */
+.jana-dashboard .menu-controls {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(26, 27, 46, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  border-radius: 15px;
+}
+
+/* Smooth scrolling optimization */
+.jana-dashboard .menu-list-container {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--aurora-orange) rgba(255, 255, 255, 0.1);
+}
+
+/* Custom scrollbar for webkit browsers */
+.jana-dashboard .menu-list-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.jana-dashboard .menu-list-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.jana-dashboard .menu-list-container::-webkit-scrollbar-thumb {
+  background: var(--gradient-aurora);
+  border-radius: 4px;
+}
+
+.jana-dashboard .menu-list-container::-webkit-scrollbar-thumb:hover {
+  background: var(--aurora-orange);
+}
+
+/* Optimized menu grid for better performance */
+.jana-dashboard .menu-list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(clamp(220px, 25vw, 280px), 1fr)
+  );
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  margin-bottom: 2rem;
+  contain: layout;
+}
+
+/* Reduce motion for performance on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .jana-dashboard .menu-card,
+  .jana-dashboard .lazy-image-container img,
+  .jana-dashboard .loading-spinner {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* GPU acceleration for better performance */
+.jana-dashboard .menu-card,
+.jana-dashboard .booking-card,
+.jana-dashboard .feedback-card,
+.jana-dashboard .package-card,
+.jana-dashboard .offer-card,
+.jana-dashboard .faq-card {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 /* Enhanced Booking Cards */
 .jana-dashboard .booking-card {
   box-shadow: 0 15px 35px var(--shadow-cosmic);
@@ -805,7 +900,6 @@
 }
 
 .jana-dashboard .menu-card:hover {
-  transform: translateY(-5px) scale(1.02);
   border-color: var(--aurora-orange);
   box-shadow: 0 18px 40px var(--shadow-dark);
 }
@@ -1248,13 +1342,6 @@
   .jana-dashboard .bundles-list::-webkit-scrollbar {
     display: none;
   }
-}
-
-.jana-dashboard .booking-card:nth-child(5),
-.jana-dashboard .menu-card:nth-child(5),
-.jana-dashboard .feedback-card:nth-child(5),
-.jana-dashboard .bundle-card:nth-child(5) {
-  animation-delay: 0.5s;
 }
 
 /* Additional decoration elements */

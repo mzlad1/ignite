@@ -211,7 +211,7 @@ const Home = () => {
               />
             </div>
             <div className="zone-content">
-              <h3>☕ IGNTIE Cafe</h3>
+              <h3>☕ IGNITE Cafe</h3>
               <p>
                 Need a break from the action? Whether you’re grabbing a
                 refreshing drink on the go or taking a moment to unwind, our

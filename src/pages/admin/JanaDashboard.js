@@ -1,4 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+} from "react";
 import {
   collection,
   getDocs,
@@ -16,6 +22,97 @@ import {
   sendApprovalEmail,
   sendRejectionEmail,
 } from "../../services/emailService";
+
+// Lazy Image Component
+const LazyImage = React.memo(({ src, alt, style, className }) => {
+  const [imageSrc, setImageSrc] = useState(null);
+  const [imageRef, setImageRef] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    let observer;
+    if (imageRef && imageSrc !== src) {
+      if (IntersectionObserver) {
+        observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting && imageSrc !== src) {
+                setImageSrc(src);
+                observer.unobserve(imageRef);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        observer.observe(imageRef);
+      } else {
+        // Fallback for older browsers
+        setImageSrc(src);
+      }
+    }
+    return () => {
+      if (observer && observer.unobserve) {
+        observer.unobserve(imageRef);
+      }
+    };
+  }, [imageRef, imageSrc, src]);
+
+  return (
+    <div
+      ref={setImageRef}
+      className={`lazy-image-container ${className || ""}`}
+      style={style}
+    >
+      {!isLoaded && (
+        <div className="image-skeleton">
+          <div className="skeleton-shimmer"></div>
+        </div>
+      )}
+      {imageSrc && (
+        <img
+          src={imageSrc}
+          alt={alt}
+          style={{
+            ...style,
+            opacity: isLoaded ? 1 : 0,
+            transition: "opacity 0.3s ease",
+          }}
+          onLoad={() => setIsLoaded(true)}
+          onError={() => setIsLoaded(true)}
+        />
+      )}
+    </div>
+  );
+});
+
+// Menu Item Card Component
+const MenuItemCard = React.memo(({ item, onDelete }) => {
+  return (
+    <div className="menu-card">
+      <div className="item-image">
+        {item.image && item.image.startsWith("http") ? (
+          <LazyImage
+            src={item.image}
+            alt={item.name}
+            style={{
+              width: "50px",
+              height: "50px",
+              objectFit: "cover",
+              borderRadius: "8px",
+            }}
+            className="menu-item-image"
+          />
+        ) : (
+          <span>{item.image}</span>
+        )}
+      </div>
+      <span className="item-name">{item.name}</span>
+      <button onClick={() => onDelete(item.id)} className="delete">
+        Delete
+      </button>
+    </div>
+  );
+});
 
 const JanaDashboard = () => {
   const { showSuccess, showError, showWarning, showConfirm } = useToast();
@@ -59,6 +156,13 @@ const JanaDashboard = () => {
   const [rejectionReason, setRejectionReason] = useState("");
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [bookingToReject, setBookingToReject] = useState(null);
+
+  // Menu pagination states
+  const [menuPage, setMenuPage] = useState(1);
+  const [menuItemsPerPage] = useState(12); // Adjustable items per page
+  const [menuSearchTerm, setMenuSearchTerm] = useState("");
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const menuListRef = useRef(null);
 
   useEffect(() => {
     fetchData();
@@ -214,27 +318,6 @@ const JanaDashboard = () => {
       showSuccess("Menu item added successfully!");
     } catch (error) {
       showError("Error adding menu item: " + error.message);
-    }
-  };
-
-  const deleteMenuItem = async (itemId) => {
-    const confirmed = await showConfirm({
-      title: "Delete Menu Item",
-      message:
-        "Are you sure you want to delete this menu item? This action cannot be undone.",
-      confirmText: "Delete Item",
-      cancelText: "Cancel",
-      type: "danger",
-    });
-
-    if (confirmed) {
-      try {
-        await deleteDoc(doc(db, "menu", itemId));
-        setMenuItems(menuItems.filter((item) => item.id !== itemId));
-        showSuccess("Menu item deleted successfully!");
-      } catch (error) {
-        showError("Error deleting menu item: " + error.message);
-      }
     }
   };
 
@@ -655,6 +738,80 @@ const JanaDashboard = () => {
     }
   };
 
+  // Memoized filtered and paginated menu items
+  const filteredMenuItems = useMemo(() => {
+    if (!menuSearchTerm) return menuItems;
+    return menuItems.filter((item) =>
+      item.name.toLowerCase().includes(menuSearchTerm.toLowerCase())
+    );
+  }, [menuItems, menuSearchTerm]);
+
+  const paginatedMenuItems = useMemo(() => {
+    const startIndex = 0;
+    const endIndex = menuPage * menuItemsPerPage;
+    return filteredMenuItems.slice(startIndex, endIndex);
+  }, [filteredMenuItems, menuPage, menuItemsPerPage]);
+
+  const hasMoreMenuItems = useMemo(() => {
+    return paginatedMenuItems.length < filteredMenuItems.length;
+  }, [paginatedMenuItems.length, filteredMenuItems.length]);
+
+  // Load more items function
+  const loadMoreMenuItems = useCallback(() => {
+    if (!isLoadingMore && hasMoreMenuItems) {
+      setIsLoadingMore(true);
+      // Simulate loading delay for better UX
+      setTimeout(() => {
+        setMenuPage((prev) => prev + 1);
+        setIsLoadingMore(false);
+      }, 300);
+    }
+  }, [isLoadingMore, hasMoreMenuItems]);
+
+  // Scroll handler for infinite scroll
+  const handleMenuScroll = useCallback(
+    (e) => {
+      const { scrollTop, scrollHeight, clientHeight } = e.target;
+      if (scrollHeight - scrollTop <= clientHeight * 1.5) {
+        // Load when 1.5 screens from bottom
+        loadMoreMenuItems();
+      }
+    },
+    [loadMoreMenuItems]
+  );
+
+  // Optimized delete function
+  const deleteMenuItem = useCallback(
+    async (itemId) => {
+      const confirmed = await showConfirm({
+        title: "Delete Menu Item",
+        message:
+          "Are you sure you want to delete this menu item? This action cannot be undone.",
+        confirmText: "Delete Item",
+        cancelText: "Cancel",
+        type: "danger",
+      });
+
+      if (confirmed) {
+        try {
+          await deleteDoc(doc(db, "menu", itemId));
+          setMenuItems((prevItems) =>
+            prevItems.filter((item) => item.id !== itemId)
+          );
+          showSuccess("Menu item deleted successfully!");
+        } catch (error) {
+          showError("Error deleting menu item: " + error.message);
+        }
+      }
+    },
+    [showConfirm, showSuccess, showError]
+  );
+
+  // Reset pagination when search changes
+  useEffect(() => {
+    setMenuPage(1);
+  }, [menuSearchTerm]);
+
   return (
     <div className="jana-dashboard">
       <div className="container">
@@ -902,33 +1059,78 @@ const JanaDashboard = () => {
               </button>
             </div>
 
-            <div className="menu-list">
-              {menuItems.map((item) => (
-                <div key={item.id} className="menu-card">
-                  <div className="item-image">
-                    {item.image.startsWith("http") ? (
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    ) : (
-                      <span>{item.image}</span>
-                    )}
-                  </div>
-                  <span className="item-name">{item.name}</span>
+            {/* Search and Filter Controls */}
+            <div className="menu-controls">
+              <div className="search-container">
+                <input
+                  type="text"
+                  placeholder="🔍 Search menu items..."
+                  value={menuSearchTerm}
+                  onChange={(e) => setMenuSearchTerm(e.target.value)}
+                  className="search-input"
+                />
+                {menuSearchTerm && (
                   <button
-                    onClick={() => deleteMenuItem(item.id)}
-                    className="delete"
+                    onClick={() => setMenuSearchTerm("")}
+                    className="clear-search"
                   >
-                    Delete
+                    ✕
+                  </button>
+                )}
+              </div>
+              <div className="menu-stats">
+                Showing {paginatedMenuItems.length} of{" "}
+                {filteredMenuItems.length} items
+              </div>
+            </div>
+
+            {/* Menu List with Virtual Scrolling */}
+            <div
+              className="menu-list-container"
+              ref={menuListRef}
+              onScroll={handleMenuScroll}
+            >
+              <div className="menu-list">
+                {paginatedMenuItems.map((item) => (
+                  <MenuItemCard
+                    key={item.id}
+                    item={item}
+                    onDelete={deleteMenuItem}
+                  />
+                ))}
+              </div>
+
+              {/* Loading More Indicator */}
+              {isLoadingMore && (
+                <div className="loading-more">
+                  <div className="loading-spinner"></div>
+                  <span>Loading more items...</span>
+                </div>
+              )}
+
+              {/* Load More Button (fallback for non-infinite scroll) */}
+              {!isLoadingMore && hasMoreMenuItems && (
+                <div className="load-more-container">
+                  <button onClick={loadMoreMenuItems} className="load-more-btn">
+                    Load More Items (
+                    {filteredMenuItems.length - paginatedMenuItems.length}{" "}
+                    remaining)
                   </button>
                 </div>
-              ))}
+              )}
+
+              {/* No Items State */}
+              {filteredMenuItems.length === 0 && !loading && (
+                <div className="no-items-state">
+                  <div className="no-items-icon">🍽️</div>
+                  <h3>No menu items found</h3>
+                  <p>
+                    {menuSearchTerm
+                      ? `No items match "${menuSearchTerm}"`
+                      : "Start by adding your first menu item!"}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -1571,18 +1773,221 @@ const JanaDashboard = () => {
           background: #dc2626;
         }
 
+        .menu-controls {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+          gap: 1rem;
+          flex-wrap: wrap;
+        }
+
+        .search-container {
+          position: relative;
+          flex: 1;
+          max-width: 400px;
+        }
+
+        .search-input {
+          width: 100%;
+          padding: 12px 16px;
+          border: 2px solid rgba(255, 127, 0, 0.3);
+          border-radius: 25px;
+          background: rgba(255, 255, 255, 0.9);
+          font-size: 16px;
+          font-family: inherit;
+          transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+          outline: none;
+          border-color: var(--aurora-orange);
+          box-shadow: 0 0 0 4px rgba(255, 127, 0, 0.1);
+        }
+
+        .clear-search {
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          font-size: 16px;
+          cursor: pointer;
+          color: #666;
+          padding: 4px;
+          border-radius: 50%;
+          transition: all 0.2s ease;
+        }
+
+        .clear-search:hover {
+          background: rgba(255, 127, 0, 0.1);
+          color: var(--aurora-orange);
+        }
+
+        .menu-stats {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.8);
+          font-weight: 500;
+        }
+
+        .menu-list-container {
+          max-height: 70vh;
+          overflow-y: auto;
+          padding-right: 8px;
+          scroll-behavior: smooth;
+          overflow: hidden;
+        }
+
+        .menu-list {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 1.5rem;
+          margin-bottom: 2rem;
+        }
+
+        .lazy-image-container {
+          position: relative;
+          overflow: hidden;
+          border-radius: 8px;
+        }
+
+        .image-skeleton {
+          width: 50px;
+          height: 50px;
+          background: linear-gradient(
+            90deg,
+            #f0f0f0 25%,
+            #e0e0e0 50%,
+            #f0f0f0 75%
+          );
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite;
+          border-radius: 8px;
+        }
+
+        .skeleton-shimmer {
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent 25%,
+            rgba(255, 255, 255, 0.5) 50%,
+            transparent 75%
+          );
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+
+        .loading-more {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          padding: 2rem;
+          color: rgba(255, 255, 255, 0.8);
+          font-weight: 500;
+        }
+
+        .loading-spinner {
+          width: 20px;
+          height: 20px;
+          border: 2px solid rgba(255, 127, 0, 0.3);
+          border-top: 2px solid var(--aurora-orange);
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        .load-more-container {
+          display: flex;
+          justify-content: center;
+          padding: 2rem;
+        }
+
+        .load-more-btn {
+          background: var(--gradient-stellar);
+          color: white;
+          border: none;
+          border-radius: 25px;
+          padding: 12px 24px;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-family: inherit;
+        }
+
+        .load-more-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(74, 159, 255, 0.3);
+        }
+
+        .no-items-state {
+          text-align: center;
+          padding: 4rem 2rem;
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        .no-items-icon {
+          font-size: 4rem;
+          margin-bottom: 1rem;
+          opacity: 0.5;
+        }
+
+        .no-items-state h3 {
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+          color: white;
+        }
+
+        .no-items-state p {
+          font-size: 1rem;
+          opacity: 0.8;
+        }
+
+        /* Optimize for mobile */
         @media (max-width: 768px) {
-          .bookings-header {
+          .menu-controls {
             flex-direction: column;
             align-items: stretch;
           }
 
-          .booking-filters {
-            justify-content: center;
+          .search-container {
+            max-width: none;
           }
 
-          .booking-actions {
-            flex-direction: column;
+          .menu-list {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+          }
+
+          .menu-list-container {
+            max-height: 60vh;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .menu-list {
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
           }
         }
       `}</style>

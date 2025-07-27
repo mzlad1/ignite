@@ -81,7 +81,7 @@ const Menu = () => {
   return (
     <div className="menu">
       <div className="container">
-        <h1> Menu Café</h1>
+        <h1> IGNITE Cafe</h1>
         <p>Delicious food and refreshing drinks to fuel your gaming session!</p>
 
         {loading ? (
