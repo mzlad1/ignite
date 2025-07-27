@@ -1,0 +1,583 @@
+/* Advanced NotFound Page CSS with Enhanced Cosmic Theme and Character Integration */
+
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --cosmic-dark: #0a0b1a;
+  --space-navy: #1a1b2e;
+  --deep-space: #16213e;
+  --aurora-orange: #ff7f00;
+  --energy-amber: #ffa500;
+  --cosmic-gold: #ffd700;
+  --stellar-blue: #4a9fff;
+  --nebula-purple: #6b46c1;
+  --white: #ffffff;
+  --cosmic-gray: #2d3748;
+  --shadow-cosmic: rgba(255, 127, 0, 0.1);
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+  --shadow-heavy: rgba(0, 0, 0, 0.5);
+
+  --gradient-cosmic: linear-gradient(
+    135deg,
+    var(--cosmic-dark),
+    var(--space-navy)
+  );
+  --gradient-aurora: linear-gradient(
+    135deg,
+    var(--aurora-orange),
+    var(--energy-amber)
+  );
+  --gradient-stellar: linear-gradient(
+    135deg,
+    var(--stellar-blue),
+    var(--nebula-purple)
+  );
+  --gradient-energy: linear-gradient(
+    135deg,
+    var(--energy-amber),
+    var(--cosmic-gold)
+  );
+}
+
+/* NotFound Page Specific Styles - All selectors prefixed with .not-found-page */
+.not-found-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem 0;
+  background: var(--gradient-cosmic);
+  font-family: "Fredoka", sans-serif;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Enhanced Animated Background Elements */
+.not-found-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 30% 20%,
+      rgba(255, 127, 0, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 70% 80%,
+      rgba(255, 165, 0, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 215, 0, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(74, 159, 255, 0.08) 0%,
+      transparent 50%
+    );
+  animation: not-found-cosmicFloat 30s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Large Enzo Character - Lost Guide */
+.not-found-page .not-found-enzo-main {
+  position: absolute;
+  top: 8%;
+  right: -5%;
+  width: clamp(450px, 42vw, 700px);
+  height: clamp(450px, 42vw, 700px);
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo1_wxl5jb.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.15;
+  animation: not-found-enzoFloat 18s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Zoe Character - Helper */
+.not-found-page .not-found-zoe-main {
+  position: absolute;
+  bottom: 5%;
+  left: -8%;
+  width: clamp(380px, 35vw, 580px);
+  height: clamp(380px, 35vw, 580px);
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe1_uqewcu.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.12;
+  animation: not-found-zoeFloat 22s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Additional Helper Characters */
+.not-found-page .not-found-enzo-helper {
+  position: absolute;
+  top: 40%;
+  left: 5%;
+  width: clamp(150px, 22vw, 220px);
+  height: clamp(150px, 22vw, 220px);
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo3_dsudbe.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+  animation: not-found-helperBounce 15s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.not-found-page .not-found-zoe-helper {
+  position: absolute;
+  top: 25%;
+  right: 8%;
+  width: clamp(120px, 18vw, 180px);
+  height: clamp(120px, 18vw, 180px);
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe2_vzrhaz.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.08;
+  animation: not-found-helperFloat 17s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes not-found-cosmicFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-30px) rotate(2deg);
+  }
+  66% {
+    transform: translateY(20px) rotate(-1.5deg);
+  }
+}
+
+@keyframes not-found-enzoFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(-40px) rotate(4deg) scale(1.05);
+    opacity: 0.22;
+  }
+}
+
+@keyframes not-found-zoeFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translateY(-35px) rotate(-3deg) scale(1.03);
+    opacity: 0.18;
+  }
+}
+
+@keyframes not-found-helperBounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-25px) scale(1.08);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.04);
+  }
+  75% {
+    transform: translateY(-20px) scale(1.06);
+  }
+}
+
+@keyframes not-found-helperFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(5deg);
+  }
+}
+
+.not-found-page .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2rem);
+  position: relative;
+  z-index: 2;
+}
+
+.not-found-page .not-found-content {
+  text-align: center;
+  background: rgba(26, 27, 46, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: clamp(3rem, 6vw, 4rem);
+  box-shadow: 0 30px 60px var(--shadow-dark),
+    inset 0 1px 0 rgba(255, 127, 0, 0.2);
+  border: 2px solid rgba(255, 127, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  animation: not-found-slideInUp 1s ease-out;
+}
+
+/* Content Background Character */
+.not-found-page .not-found-content::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -20%;
+  transform: translateY(-50%);
+  width: clamp(300px, 35vw, 500px);
+  height: clamp(300px, 35vw, 500px);
+  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo2_cfjkjs.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.06;
+  animation: not-found-contentCharFloat 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes not-found-slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes not-found-contentCharFloat {
+  0%,
+  100% {
+    transform: translateY(-50%) scale(1) rotate(0deg);
+    opacity: 0.06;
+  }
+  50% {
+    transform: translateY(-52%) scale(1.04) rotate(3deg);
+    opacity: 0.12;
+  }
+}
+
+/* Giant 404 Number */
+.not-found-page .error-number {
+  font-size: clamp(6rem, 15vw, 12rem);
+  font-weight: 900;
+  background: var(--gradient-aurora);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+  text-shadow: 0 8px 25px rgba(255, 127, 0, 0.3);
+  position: relative;
+  z-index: 2;
+  animation: not-found-numberFloat 4s ease-in-out infinite;
+}
+
+@keyframes not-found-numberFloat {
+  0%,
+  100% {
+    transform: scale(1);
+    text-shadow: 0 8px 25px rgba(255, 127, 0, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    text-shadow: 0 12px 35px rgba(255, 127, 0, 0.5);
+  }
+}
+
+/* Main Title */
+.not-found-page h1 {
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+/* Error Message */
+.not-found-page .error-message {
+  font-size: clamp(1.2rem, 2.8vw, 1.4rem);
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin-bottom: clamp(3rem, 6vw, 4rem);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 2;
+  font-weight: 500;
+}
+
+/* Helpful Links Section */
+.not-found-page .helpful-links {
+  margin-bottom: clamp(3rem, 5vw, 4rem);
+  position: relative;
+  z-index: 2;
+}
+
+.not-found-page .helpful-links h2 {
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: clamp(2rem, 4vw, 2.5rem);
+  background: var(--gradient-energy);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Links Grid */
+.not-found-page .links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+/* Help Links */
+.not-found-page .help-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  text-decoration: none;
+  color: var(--cosmic-dark);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid rgba(255, 127, 0, 0.2);
+  box-shadow: 0 10px 25px var(--shadow-cosmic);
+  position: relative;
+  overflow: hidden;
+}
+
+.not-found-page .help-link::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 127, 0, 0.1),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.not-found-page .help-link:hover::before {
+  left: 100%;
+}
+
+.not-found-page .help-link:hover {
+  transform: translateY(-5px) scale(1.03);
+  border-color: var(--aurora-orange);
+  box-shadow: 0 20px 40px var(--shadow-dark);
+  color: var(--cosmic-dark);
+}
+
+.not-found-page .link-icon {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  margin-bottom: clamp(0.8rem, 2vw, 1rem);
+  filter: drop-shadow(0 2px 8px rgba(255, 127, 0, 0.3));
+}
+
+.not-found-page .link-text {
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  font-weight: 600;
+  font-family: "Fredoka", sans-serif;
+}
+
+/* Contact Help Section */
+.not-found-page .contact-help {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: clamp(2rem, 4vw, 2.5rem);
+  border: 1px solid rgba(255, 127, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+.not-found-page .contact-help h3 {
+  font-size: clamp(1.5rem, 3.5vw, 1.8rem);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: clamp(1rem, 2vw, 1.2rem);
+  background: var(--gradient-stellar);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.not-found-page .contact-help p {
+  font-size: clamp(1.1rem, 2.5vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.not-found-page .contact-help strong {
+  color: var(--cosmic-gold);
+  font-weight: 700;
+}
+
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 1200px) {
+  /* Adjust character sizes for tablets */
+  .not-found-page .not-found-enzo-main {
+    width: clamp(350px, 35vw, 500px);
+    height: clamp(350px, 35vw, 500px);
+  }
+
+  .not-found-page .not-found-zoe-main {
+    width: clamp(300px, 30vw, 450px);
+    height: clamp(300px, 30vw, 450px);
+  }
+
+  .not-found-page .links-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  /* Keep main characters but smaller */
+  .not-found-page .not-found-enzo-main {
+    width: clamp(280px, 30vw, 400px);
+    height: clamp(280px, 30vw, 400px);
+    top: 10%;
+    right: -8%;
+  }
+
+  .not-found-page .not-found-zoe-main {
+    width: clamp(220px, 25vw, 350px);
+    height: clamp(220px, 25vw, 350px);
+    bottom: 8%;
+    left: -10%;
+  }
+
+  .not-found-page .not-found-enzo-helper {
+    width: clamp(120px, 18vw, 170px);
+    height: clamp(120px, 18vw, 170px);
+  }
+
+  .not-found-page .not-found-zoe-helper {
+    width: clamp(100px, 15vw, 140px);
+    height: clamp(100px, 15vw, 140px);
+  }
+}
+
+@media (max-width: 768px) {
+  .not-found-page .container {
+    padding: 0 1rem;
+  }
+
+  /* Hide large background characters on mobile for performance */
+  .not-found-page .not-found-enzo-main,
+  .not-found-page .not-found-zoe-main,
+  .not-found-page .not-found-enzo-helper,
+  .not-found-page .not-found-zoe-helper {
+    display: none;
+  }
+
+  .not-found-page .not-found-content {
+    padding: 2.5rem;
+    border-radius: 25px;
+  }
+
+  .not-found-page .links-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  /* Keep content character visible but smaller */
+  .not-found-page .not-found-content::before {
+    width: clamp(250px, 30vw, 350px);
+    height: clamp(250px, 30vw, 350px);
+    right: -15%;
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found-page .not-found-content {
+    padding: 2rem;
+    border-radius: 20px;
+  }
+
+  /* Make content character smaller on very small screens */
+  .not-found-page .not-found-content::before {
+    width: clamp(200px, 25vw, 300px);
+    height: clamp(200px, 25vw, 300px);
+  }
+
+  .not-found-page .help-link {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+
+  .not-found-page .contact-help {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .not-found-page .not-found-content {
+    padding: 1.5rem;
+  }
+
+  .not-found-page .help-link {
+    padding: 1.2rem;
+  }
+
+  .not-found-page .contact-help {
+    padding: 1.2rem;
+  }
+}
+
+/* Enhanced Character Integration on Hover */
+.not-found-page:hover .not-found-enzo-main {
+  animation-play-state: paused;
+  opacity: 0.25;
+  transform: scale(1.02);
+}
+
+.not-found-page:hover .not-found-zoe-main {
+  animation-play-state: paused;
+  opacity: 0.2;
+  transform: scale(1.02);
+}
+
+.not-found-page .not-found-content:hover::before {
+  animation-play-state: paused;
+  opacity: 0.15;
+  transform: translateY(-50%) scale(1.06);
+}
+
+/* Loading Animation */
+.not-found-page .not-found-content {
+  animation-fill-mode: both;
+}
+
+/* Special Effects */
+.not-found-page * {
+  transition: all 0.3s ease;
+}

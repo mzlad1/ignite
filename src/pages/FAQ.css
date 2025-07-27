@@ -46,6 +46,7 @@
   padding: 2rem 0;
   background: var(--gradient-cosmic);
   font-family: "Fredoka", sans-serif;
+  overflow: hidden;
 }
 
 /* Enhanced Animated Background Elements */

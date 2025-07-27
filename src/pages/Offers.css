@@ -52,6 +52,7 @@
   min-height: 100vh;
   position: relative;
   padding: 2rem 0;
+  overflow: hidden;
 }
 
 .offers {

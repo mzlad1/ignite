@@ -55,6 +55,7 @@
   min-height: 100vh;
   position: relative;
   padding: clamp(2rem, 4vw, 3rem) 0;
+  overflow: hidden;
 }
 
 /* Enhanced Animated Background Elements */

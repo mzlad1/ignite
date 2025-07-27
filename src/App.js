@@ -9,13 +9,13 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 
 import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
 import Menu from "./pages/Menu";
 import Offers from "./pages/Offers";
 import Booking from "./pages/Booking";
 import Feedback from "./pages/Feedback";
 import BirthdayPackages from "./pages/BirthdayPackages";
 import FAQ from "./pages/FAQ";
+import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ReceptionCalendar from "./pages/admin/ReceptionCalendar";
@@ -43,7 +43,6 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/offers" element={<Offers />} />
             <Route path="/booking" element={<Booking />} />
@@ -110,6 +109,9 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* Catch-all route for 404 - must be last */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </Router>
