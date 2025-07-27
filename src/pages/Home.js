@@ -170,9 +170,11 @@ const Home = () => {
             <div className="zone-content">
               <h3>🥽 VR Games Zone</h3>
               <p>
-                Step into a world of fun and let your inner gamer roam free with
-                our cleverly crafted arcade machines! Perfect for sparking joy
-                and creating high-score memories with friends.
+                Step into the future of fun with our cutting-edge VR
+                experiences! Powered by advanced technology, our VR zone lets
+                you explore new worlds, challenge your reflexes, and make
+                unforgettable memories with friends—no controllers, just pure
+                immersion.
               </p>
             </div>
           </div>
@@ -190,9 +192,10 @@ const Home = () => {
             <div className="zone-content">
               <h3>🎳 Bowling Zone</h3>
               <p>
-                Dive into flashing lights and thrilling sounds where the fun
-                never stops! Perfect for parties or casual hangouts, our Arcade
-                Room brings back the classics for nonstop excitement.
+                Step into a space full of energy, colorful lights, and good
+                vibes! With music, glowing lanes, and a lively atmosphere, our
+                bowling zone is perfect for parties, friendly matches, or just
+                having fun with your friends and family.
               </p>
             </div>
           </div>
@@ -208,11 +211,13 @@ const Home = () => {
               />
             </div>
             <div className="zone-content">
-              <h3>☕ Grab & Giggle Café</h3>
+              <h3>☕ IGNTIE Cafe</h3>
               <p>
-                Need a break? Grab a refreshing drink while you play or sit back
-                and relax in our cozy café—it's the perfect way to recharge
-                between rounds!
+                Need a break from the action? Whether you’re grabbing a
+                refreshing drink on the go or taking a moment to unwind, our
+                indoor and outdoor seating has you covered. Sit back, relax, and
+                enjoy views of the bowling lanes—perfect for recharging,
+                socializing, and soaking in the fun between rounds.
               </p>
             </div>
           </div>
@@ -224,13 +229,14 @@ const Home = () => {
           <div className="info-content">
             <div className="info-text scroll-animate-child">
               <h2>Get to Know Us</h2>
-              <h3>Safety / Technology / Inclusion / Amusement</h3>
               <p>
-                These are four key strengths that differentiate Ignite Arcade
-                from other entertainment venues. If each communication message
-                we develop leverages one or more of these strengths, our
-                creative platform will come to life with depth, breadth and
-                longevity.
+                At IGNITE, we’re built on four core pillars: Safety, Technology,
+                Inclusion, and Amusement. These values set us apart and shape
+                everything we do — from the games we offer to the experience
+                you’ll have. Every message we share and every moment you enjoy
+                is powered by at least one of these principles. Together, they
+                create an experience that’s exciting, meaningful, and built to
+                last.
               </p>
             </div>
             <div className="info-image scroll-animate-child">
