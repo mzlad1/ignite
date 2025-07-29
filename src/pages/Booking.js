@@ -643,10 +643,8 @@ const Booking = () => {
                         onClick={() => setFormData({ ...formData, time: slot })}
                         title={
                           formData.duration > 45
-                            ? `Will span slots: ${occupiedSlots.join(
-                                ", "
-                              )}\nApproved lanes: ${approvedLanes}/${MAX_LANES}`
-                            : `Approved lanes: ${approvedLanes}/${MAX_LANES}`
+                            ? `Will span slots: ${occupiedSlots.join(", ")}`
+                            : ``
                         }
                       >
                         <div className="slot-time">{slot}</div>
@@ -656,11 +654,8 @@ const Booking = () => {
                               ⚠️ At Capacity
                             </span>
                           ) : (
-                            <span className="available">✅ Available</span>
+                            <span className="available"></span>
                           )}
-                        </div>
-                        <div className="slot-info">
-                          🎳 {approvedLanes}/{MAX_LANES} approved
                         </div>
                         {formData.duration > 45 && formData.time === slot && (
                           <div className="slot-duration">
@@ -671,19 +666,7 @@ const Booking = () => {
                     );
                   })}
                 </div>
-                <div className="slots-legend">
-                  <p>
-                    <span className="legend-item">
-                      <span className="legend-color available"></span>
-                      Available for booking
-                    </span>
-                    <span className="legend-item">
-                      <span className="legend-color at-capacity"></span>
-                      At capacity (6 approved bookings) - may require
-                      rescheduling
-                    </span>
-                  </p>
-                </div>
+                {/* Removed slots-legend section */}
               </div>
             </div>
 
@@ -914,35 +897,7 @@ const Booking = () => {
           margin-top: 4px;
         }
 
-        .slots-legend {
-          margin-top: 16px;
-          padding: 12px;
-          background: #6a7784;
-          border-radius: 8px;
-          font-size: 12px;
-        }
-
-        .legend-item {
-          display: inline-flex;
-          align-items: center;
-          margin-right: 16px;
-          margin-bottom: 4px;
-        }
-
-        .legend-color {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          margin-right: 6px;
-        }
-
-        .legend-color.available {
-          background: #22c55e;
-        }
-
-        .legend-color.at-capacity {
-          background: #f59e0b;
-        }
+        /* Removed slots-legend styles */
 
         .submit-note {
           text-align: center;

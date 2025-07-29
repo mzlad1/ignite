@@ -34,7 +34,7 @@ export const sendApprovalEmail = async (bookingDetails) => {
       to_email: bookingDetails.email.trim(),
       to_name: bookingDetails.name,
       from_name: "Ignite Team",
-      reply_to: "ignite@gmail.com", // Replace with your business email
+      reply_to: "ignite@gmail.com",
       subject: `✅ Bowling Booking Confirmed - ${bookingDetails.date}`,
       booking_date: bookingDetails.date,
       booking_time: bookingDetails.time,
@@ -76,7 +76,7 @@ export const sendRejectionEmail = async (bookingDetails, reason = "") => {
       to_email: bookingDetails.email.trim(),
       to_name: bookingDetails.name,
       from_name: "Ignite Team",
-      reply_to: "ignite@gmail.com", // Replace with your business email
+      reply_to: "ignite@gmail.com",
       subject: `❌ Bowling Booking Update - ${bookingDetails.date}`,
       booking_date: bookingDetails.date,
       booking_time: bookingDetails.time,
