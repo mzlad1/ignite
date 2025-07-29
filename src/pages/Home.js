@@ -171,9 +171,7 @@ const Home = () => {
       <section className="zones scroll-animate" ref={zonesRef}>
         <div className="container">
           <h2 className="scroll-animate-child">Our Gaming Zones</h2>
-          <p >
-            Click on any zone card to view the gallery and explore more!
-          </p>
+          <p>Click on any zone card to view the gallery and explore more!</p>
 
           <div
             className="zone-card scroll-animate-child clickable-zone"

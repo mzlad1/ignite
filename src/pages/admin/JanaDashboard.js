@@ -14,15 +14,16 @@ import {
   doc,
   query,
   orderBy,
+  getDoc,
 } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 import "./JanaDashboard.css";
 import { useToast } from "../../contexts/ToastContext";
 import {
   sendApprovalEmail,
   sendRejectionEmail,
 } from "../../services/emailService";
-
+import { onAuthStateChanged } from "firebase/auth";
 // Lane capacity constant
 const MAX_LANES = 6;
 
@@ -151,6 +152,7 @@ const LaneCapacityIndicator = ({ date, time, bookings }) => {
 const JanaDashboard = () => {
   const { showSuccess, showError, showWarning, showConfirm } = useToast();
   const [activeTab, setActiveTab] = useState("bookings");
+  const [userRole, setUserRole] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [feedback, setFeedback] = useState([]);
@@ -200,6 +202,21 @@ const JanaDashboard = () => {
 
   useEffect(() => {
     fetchData();
+    // Fetch user role
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        try {
+          const adminDoc = await getDoc(doc(db, "admins", currentUser.uid));
+          if (adminDoc.exists()) {
+            setUserRole(adminDoc.data().role);
+          }
+        } catch (error) {
+          console.error("Error fetching user role:", error);
+        }
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const fetchData = async () => {
@@ -900,7 +917,11 @@ const JanaDashboard = () => {
   return (
     <div className="jana-dashboard">
       <div className="container">
-        <h1>Jana's Management Dashboard</h1>
+        <h1>
+          {userRole === "reception"
+            ? "Bookings Management"
+            : "Jana's Management Dashboard"}
+        </h1>
 
         <div className="tab-navigation">
           <button
@@ -909,36 +930,40 @@ const JanaDashboard = () => {
           >
             📅 Manage Bookings
           </button>
-          <button
-            className={activeTab === "menu" ? "active" : ""}
-            onClick={() => setActiveTab("menu")}
-          >
-            🍽️ Manage Menu
-          </button>
-          <button
-            className={activeTab === "feedback" ? "active" : ""}
-            onClick={() => setActiveTab("feedback")}
-          >
-            💬 Manage Feedback
-          </button>
-          <button
-            className={activeTab === "birthday" ? "active" : ""}
-            onClick={() => setActiveTab("birthday")}
-          >
-            🎉 Manage Birthday Packages
-          </button>
-          <button
-            className={activeTab === "offers" ? "active" : ""}
-            onClick={() => setActiveTab("offers")}
-          >
-            💰 Manage Offers
-          </button>
-          <button
-            className={activeTab === "faqs" ? "active" : ""}
-            onClick={() => setActiveTab("faqs")}
-          >
-            ❓ Manage FAQs
-          </button>
+          {userRole === "jana" && (
+            <>
+              <button
+                className={activeTab === "menu" ? "active" : ""}
+                onClick={() => setActiveTab("menu")}
+              >
+                🍽️ Manage Menu
+              </button>
+              <button
+                className={activeTab === "feedback" ? "active" : ""}
+                onClick={() => setActiveTab("feedback")}
+              >
+                💬 Manage Feedback
+              </button>
+              <button
+                className={activeTab === "birthday" ? "active" : ""}
+                onClick={() => setActiveTab("birthday")}
+              >
+                🎉 Manage Birthday Packages
+              </button>
+              <button
+                className={activeTab === "offers" ? "active" : ""}
+                onClick={() => setActiveTab("offers")}
+              >
+                💰 Manage Offers
+              </button>
+              <button
+                className={activeTab === "faqs" ? "active" : ""}
+                onClick={() => setActiveTab("faqs")}
+              >
+                ❓ Manage FAQs
+              </button>
+            </>
+          )}
         </div>
 
         {loading && <div className="loading">Loading...</div>}
@@ -1119,8 +1144,8 @@ const JanaDashboard = () => {
           </div>
         )}
 
-        {/* Menu Management */}
-        {activeTab === "menu" && (
+        {/* Menu Management - Only for Jana */}
+        {activeTab === "menu" && userRole === "jana" && (
           <div className="tab-content">
             <h2>Manage Menu</h2>
 
@@ -1238,8 +1263,8 @@ const JanaDashboard = () => {
           </div>
         )}
 
-        {/* Feedback Management */}
-        {activeTab === "feedback" && (
+        {/* Feedback Management - Only for Jana */}
+        {activeTab === "feedback" && userRole === "jana" && (
           <div className="tab-content">
             <h2>Manage Feedback</h2>
             <div className="feedback-list">
@@ -1262,8 +1287,8 @@ const JanaDashboard = () => {
           </div>
         )}
 
-        {/* Birthday Packages Management */}
-        {activeTab === "birthday" && (
+        {/* Birthday Packages Management - Only for Jana */}
+        {activeTab === "birthday" && userRole === "jana" && (
           <div className="tab-content">
             <h2>Manage Birthday Packages</h2>
 
@@ -1463,8 +1488,8 @@ const JanaDashboard = () => {
           </div>
         )}
 
-        {/* Offers Management */}
-        {activeTab === "offers" && (
+        {/* Offers Management - Only for Jana */}
+        {activeTab === "offers" && userRole === "jana" && (
           <div className="tab-content">
             <h2>Manage Points Offers</h2>
 
@@ -1525,8 +1550,8 @@ const JanaDashboard = () => {
           </div>
         )}
 
-        {/* FAQs Management */}
-        {activeTab === "faqs" && (
+        {/* FAQs Management - Only for Jana */}
+        {activeTab === "faqs" && userRole === "jana" && (
           <div className="tab-content">
             <h2>Manage Frequently Asked Questions</h2>
 

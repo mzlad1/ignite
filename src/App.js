@@ -65,7 +65,7 @@ function App() {
             <Route
               path="/admin/dashboard"
               element={
-                <ProtectedRoute requiredRole="jana">
+                <ProtectedRoute requiredRole={["jana", "reception"]}>
                   <AdminDashboard />
                 </ProtectedRoute>
               }
@@ -81,7 +81,7 @@ function App() {
             <Route
               path="/admin/jana"
               element={
-                <ProtectedRoute requiredRole="jana">
+                <ProtectedRoute requiredRole={["jana", "reception"]}>
                   <JanaDashboard />
                 </ProtectedRoute>
               }
@@ -118,7 +118,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
 
             {/* Catch-all route for 404 - must be last */}
             <Route path="*" element={<NotFound />} />
