@@ -23,6 +23,9 @@ import {
   sendRejectionEmail,
 } from "../../services/emailService";
 
+// Lane capacity constant
+const MAX_LANES = 6;
+
 // Lazy Image Component
 const LazyImage = React.memo(({ src, alt, style, className }) => {
   const [imageSrc, setImageSrc] = useState(null);
@@ -113,6 +116,37 @@ const MenuItemCard = React.memo(({ item, onDelete }) => {
     </div>
   );
 });
+
+// Lane Capacity Indicator Component
+const LaneCapacityIndicator = ({ date, time, bookings }) => {
+  const approvedBookings = bookings.filter(
+    (b) => b.date === date && b.time === time && b.status === "approved"
+  );
+
+  const occupiedLanes = approvedBookings.length;
+  const isAtCapacity = occupiedLanes >= MAX_LANES;
+
+  return (
+    <div className="lane-capacity-indicator">
+      <div className="lane-info">
+        <span className="lane-text">
+          🎳 Lanes: {occupiedLanes}/{MAX_LANES}
+        </span>
+        {isAtCapacity && <span className="capacity-full">FULL</span>}
+      </div>
+      <div className="lane-visual">
+        {Array.from({ length: MAX_LANES }, (_, index) => (
+          <div
+            key={index}
+            className={`lane-dot ${
+              index < occupiedLanes ? "occupied" : "available"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const JanaDashboard = () => {
   const { showSuccess, showError, showWarning, showConfirm } = useToast();
@@ -215,6 +249,20 @@ const JanaDashboard = () => {
       console.error("Error fetching data:", error);
     }
     setLoading(false);
+  };
+
+  // Helper function to get lane availability for a specific slot
+  const getLaneAvailabilityForSlot = (date, time) => {
+    const approvedBookings = bookings.filter(
+      (b) => b.date === date && b.time === time && b.status === "approved"
+    );
+
+    return {
+      occupied: approvedBookings.length,
+      available: MAX_LANES - approvedBookings.length,
+      total: MAX_LANES,
+      isAtCapacity: approvedBookings.length >= MAX_LANES,
+    };
   };
 
   // Booking management
@@ -552,21 +600,48 @@ const JanaDashboard = () => {
     }
   };
 
-  // Booking approval functions
+  // Booking approval functions with lane capacity validation
   const approveBooking = async (bookingId) => {
-    const confirmed = await showConfirm({
-      title: "Approve Booking",
-      message:
-        "Are you sure you want to approve this booking? The customer will be notified via email.",
-      confirmText: "Approve & Send Email",
-      cancelText: "Cancel",
-      type: "info",
-    });
+    try {
+      const booking = bookings.find((b) => b.id === bookingId);
 
-    if (confirmed) {
-      try {
-        const booking = bookings.find((b) => b.id === bookingId);
+      // Check lane capacity before approving
+      const approvedBookingsForSameSlot = bookings.filter(
+        (b) =>
+          b.date === booking.date &&
+          b.time === booking.time &&
+          b.status === "approved" &&
+          b.id !== bookingId // Exclude current booking
+      );
 
+      if (approvedBookingsForSameSlot.length >= MAX_LANES) {
+        showError(
+          `Cannot approve booking: All ${MAX_LANES} lanes are already booked for ${booking.date} at ${booking.time}. ` +
+            `Currently approved: ${approvedBookingsForSameSlot.length}/${MAX_LANES} lanes.`
+        );
+        return;
+      }
+
+      // Show confirmation with lane capacity info
+      const remainingLanes = MAX_LANES - approvedBookingsForSameSlot.length;
+      const confirmed = await showConfirm({
+        title: "Approve Booking",
+        message:
+          `Are you sure you want to approve this booking?\n\n` +
+          `📅 Date: ${booking.date}\n` +
+          `⏰ Time: ${booking.time}\n` +
+          `👥 Customer: ${booking.name}\n` +
+          `🎳 Lanes currently approved for this slot: ${approvedBookingsForSameSlot.length}/${MAX_LANES}\n` +
+          `🎳 Lanes remaining after approval: ${
+            remainingLanes - 1
+          }/${MAX_LANES}\n\n` +
+          `The customer will be notified via email.`,
+        confirmText: "Approve & Send Email",
+        cancelText: "Cancel",
+        type: "info",
+      });
+
+      if (confirmed) {
         // Check if booking has email
         if (!booking.email || booking.email.trim() === "") {
           showWarning(
@@ -581,31 +656,41 @@ const JanaDashboard = () => {
         });
 
         setBookings(
-          bookings.map((booking) =>
-            booking.id === bookingId
-              ? { ...booking, status: "approved", approvedAt: new Date() }
-              : booking
+          bookings.map((b) =>
+            b.id === bookingId
+              ? { ...b, status: "approved", approvedAt: new Date() }
+              : b
           )
         );
 
         // Send approval email only if email exists
         if (booking.email && booking.email.trim() !== "") {
-          console.log("Attempting to send approval email to:", booking.email); // Debug log
+          console.log("Attempting to send approval email to:", booking.email);
           const emailResult = await sendApprovalEmail(booking);
           if (emailResult.success) {
-            showSuccess("Booking approved and confirmation email sent!");
+            showSuccess(
+              `Booking approved and confirmation email sent! ` +
+                `Lane ${
+                  approvedBookingsForSameSlot.length + 1
+                }/${MAX_LANES} assigned for ${booking.date} at ${booking.time}.`
+            );
           } else {
-            console.error("Email sending failed:", emailResult.error); // Debug log
+            console.error("Email sending failed:", emailResult.error);
             showWarning(
               `Booking approved but email failed to send: ${emailResult.error}`
             );
           }
         } else {
-          showSuccess("Booking approved! (No email on file)");
+          showSuccess(
+            `Booking approved! (No email on file) ` +
+              `Lane ${
+                approvedBookingsForSameSlot.length + 1
+              }/${MAX_LANES} assigned for ${booking.date} at ${booking.time}.`
+          );
         }
-      } catch (error) {
-        showError("Error approving booking: " + error.message);
       }
+    } catch (error) {
+      showError("Error approving booking: " + error.message);
     }
   };
 
@@ -961,6 +1046,13 @@ const JanaDashboard = () => {
                       <p>📞 {booking.phone}</p>
                       {booking.email && <p>📧 {booking.email}</p>}
 
+                      {/* Lane Capacity Indicator */}
+                      <LaneCapacityIndicator
+                        date={booking.date}
+                        time={booking.time}
+                        bookings={bookings}
+                      />
+
                       {booking.type === "birthday" && booking.bundleName && (
                         <p>🎉 Package: {booking.bundleName}</p>
                       )}
@@ -983,8 +1075,19 @@ const JanaDashboard = () => {
                             <button
                               onClick={() => approveBooking(booking.id)}
                               className="approve-btn"
+                              disabled={
+                                getLaneAvailabilityForSlot(
+                                  booking.date,
+                                  booking.time
+                                ).isAtCapacity
+                              }
                             >
-                              Approve & Email
+                              {getLaneAvailabilityForSlot(
+                                booking.date,
+                                booking.time
+                              ).isAtCapacity
+                                ? "Lanes Full"
+                                : "Approve & Email"}
                             </button>
                             <button
                               onClick={() => startRejectBooking(booking.id)}
@@ -1545,7 +1648,7 @@ const JanaDashboard = () => {
         </div>
       )}
 
-      {/* Add styles for the new features */}
+      {/* Enhanced styles including lane capacity validation */}
       <style jsx>{`
         .bookings-header {
           display: flex;
@@ -1620,10 +1723,22 @@ const JanaDashboard = () => {
           border-radius: 4px;
           cursor: pointer;
           font-size: 14px;
+          transition: all 0.2s ease;
         }
 
-        .approve-btn:hover {
+        .approve-btn:hover:not(:disabled) {
           background: #16a34a;
+        }
+
+        .approve-btn:disabled {
+          background: #9ca3af !important;
+          cursor: not-allowed;
+          opacity: 0.6;
+        }
+
+        .approve-btn:disabled:hover {
+          background: #9ca3af !important;
+          transform: none;
         }
 
         .reject-btn {
@@ -1652,6 +1767,58 @@ const JanaDashboard = () => {
 
         .contact-btn:hover {
           background: #d97706;
+        }
+
+        .lane-capacity-indicator {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          padding: 8px 12px;
+          margin: 8px 0;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lane-info {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 6px;
+        }
+
+        .lane-text {
+          font-size: 14px;
+          font-weight: 500;
+          color: #374151;
+        }
+
+        .capacity-full {
+          background: #ef4444;
+          color: white;
+          padding: 2px 8px;
+          border-radius: 12px;
+          font-size: 12px;
+          font-weight: 600;
+        }
+
+        .lane-visual {
+          display: flex;
+          gap: 4px;
+        }
+
+        .lane-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          transition: all 0.2s ease;
+        }
+
+        .lane-dot.occupied {
+          background: #ef4444;
+          box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+        }
+
+        .lane-dot.available {
+          background: #22c55e;
+          box-shadow: 0 0 4px rgba(34, 197, 94, 0.5);
         }
 
         .rejection-modal-overlay {
@@ -1982,12 +2149,38 @@ const JanaDashboard = () => {
           .menu-list-container {
             max-height: 60vh;
           }
+
+          .bookings-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+          }
+
+          .booking-filters {
+            justify-content: center;
+          }
+
+          .booking-actions {
+            flex-direction: column;
+            gap: 6px;
+          }
+
+          .lane-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+          }
         }
 
         @media (max-width: 480px) {
           .menu-list {
             grid-template-columns: 1fr 1fr;
             gap: 0.8rem;
+          }
+
+          .filter-btn {
+            font-size: 12px;
+            padding: 6px 12px;
           }
         }
       `}</style>

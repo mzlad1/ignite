@@ -29,6 +29,11 @@ const AdminDashboard = () => {
             <p>View and manage existing user accounts</p>
           </Link>
 
+          <Link to="/admin/media-management" className="admin-card">
+            <h3>🎬 Media Management</h3>
+            <p>Manage images and videos for gaming zones</p>
+          </Link>
+
           <Link to="/admin/settings" className="admin-card">
             <h3>⚙️ Settings</h3>
             <p>System configuration</p>

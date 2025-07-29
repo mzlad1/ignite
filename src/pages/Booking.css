@@ -59,6 +59,7 @@ body {
   min-height: 100vh;
   padding: 2rem 0;
   background: var(--gradient-cosmic);
+  overflow: hidden;
 }
 
 /* Enhanced Animated Background Elements */
@@ -285,22 +286,6 @@ body {
   background-repeat: no-repeat;
   opacity: 0.15;
   animation: selectorBounce 6s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.booking-type-selector::after {
-  content: "";
-  position: absolute;
-  right: clamp(-80px, -15vw, -120px);
-  top: 50%;
-  transform: translateY(-50%);
-  width: clamp(60px, 12vw, 100px);
-  height: clamp(60px, 12vw, 100px);
-  background-image: url("https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo3_dsudbe.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0.15;
-  animation: selectorBounce 6s ease-in-out infinite 0.5s;
   pointer-events: none;
 }
 
@@ -1122,8 +1107,7 @@ body {
     align-items: center;
   }
 
-  .booking-type-selector::before,
-  .booking-type-selector::after {
+  .booking-type-selector::before {
     display: none;
   }
 

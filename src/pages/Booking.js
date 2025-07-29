@@ -43,7 +43,7 @@ const Booking = () => {
   const MAX_LANES = 6; // Total number of bowling lanes
 
   useEffect(() => {
-    fetchSlotAvailability();
+    fetchApprovedBookings();
     fetchBirthdayPackages();
   }, [formData.date]);
 
@@ -81,15 +81,20 @@ const Booking = () => {
     return occupiedSlots;
   };
 
-  const fetchSlotAvailability = async () => {
+  // Only fetch APPROVED bookings to check for conflicts
+  const fetchApprovedBookings = async () => {
     const dateStr = formData.date.toDateString();
-    const q = query(collection(db, "bookings"), where("date", "==", dateStr));
+    const q = query(
+      collection(db, "bookings"),
+      where("date", "==", dateStr),
+      where("status", "==", "approved") // Only count approved bookings
+    );
     const querySnapshot = await getDocs(q);
 
-    // Count lane usage for each time slot considering duration
-    const laneUsage = {};
+    // Count lane usage for each time slot considering duration - ONLY for approved bookings
+    const approvedLaneUsage = {};
     timeSlots.forEach((slot) => {
-      laneUsage[slot] = 0;
+      approvedLaneUsage[slot] = 0;
     });
 
     querySnapshot.docs.forEach((doc) => {
@@ -99,13 +104,13 @@ const Booking = () => {
 
       const occupiedSlots = getOccupiedSlots(startTime, duration);
       occupiedSlots.forEach((slot) => {
-        if (laneUsage[slot] !== undefined) {
-          laneUsage[slot] += 1;
+        if (approvedLaneUsage[slot] !== undefined) {
+          approvedLaneUsage[slot] += 1;
         }
       });
     });
 
-    setSlotAvailability(laneUsage);
+    setSlotAvailability(approvedLaneUsage);
   };
 
   const fetchBirthdayPackages = async () => {
@@ -121,29 +126,41 @@ const Booking = () => {
     }
   };
 
-  const getAvailableSlots = (timeSlot) => {
-    const usedLanes = slotAvailability[timeSlot] || 0;
-    return MAX_LANES - usedLanes;
+  const getApprovedLanes = (timeSlot) => {
+    const approvedLanes = slotAvailability[timeSlot] || 0;
+    return approvedLanes;
   };
 
-  const isSlotAvailable = (startTime, duration) => {
+  const getAvailableLanes = (timeSlot) => {
+    const approvedLanes = slotAvailability[timeSlot] || 0;
+    return MAX_LANES - approvedLanes;
+  };
+
+  // Only check if there are 6 approved bookings (lanes full)
+  const isSlotAtCapacity = (startTime, duration) => {
     const occupiedSlots = getOccupiedSlots(startTime, duration);
-    return occupiedSlots.every((slot) => getAvailableSlots(slot) > 0);
-  };
-
-  const isSlotFull = (timeSlot) => {
-    return getAvailableSlots(timeSlot) <= 0;
+    return occupiedSlots.some((slot) => getApprovedLanes(slot) >= MAX_LANES);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if all required slots are available for the booking duration
-    if (!isSlotAvailable(formData.time, formData.duration)) {
-      showWarning(
-        "Sorry, this time slot conflicts with existing bookings. Please select another time."
-      );
-      return;
+    // Only warn if the slot is at full capacity (6 approved bookings)
+    if (isSlotAtCapacity(formData.time, formData.duration)) {
+      const confirmed = await showConfirm({
+        title: "Time Slot at Capacity",
+        message:
+          "This time slot already has 6 approved bookings (all lanes occupied). " +
+          "Your booking will be submitted but may need to be rescheduled. " +
+          "Would you like to continue?",
+        confirmText: "Continue Booking",
+        cancelText: "Choose Different Time",
+        type: "warning",
+      });
+
+      if (!confirmed) {
+        return;
+      }
     }
 
     try {
@@ -598,17 +615,19 @@ const Booking = () => {
               <div className="time-slots">
                 <label>Available Time Slots:</label>
                 {formData.duration > 45 && (
-                  <p className="duration-warning">
-                    ⚠️ This booking is {formData.duration} minutes long and may
-                    conflict with multiple time slots
+                  <p className="duration-info">
+                    ℹ️ This booking is {formData.duration} minutes long and may
+                    span multiple time slots
                   </p>
                 )}
                 <div className="slots-grid">
                   {timeSlots.map((slot) => {
-                    const isAvailable = isSlotAvailable(
+                    const atCapacity = isSlotAtCapacity(
                       slot,
                       formData.duration
                     );
+                    const approvedLanes = getApprovedLanes(slot);
+                    const availableLanes = getAvailableLanes(slot);
                     const occupiedSlots = getOccupiedSlots(
                       slot,
                       formData.duration
@@ -618,20 +637,30 @@ const Booking = () => {
                       <button
                         key={slot}
                         type="button"
-                        className={`slot ${!isAvailable ? "conflicted" : ""} ${
+                        className={`slot ${atCapacity ? "at-capacity" : ""} ${
                           formData.time === slot ? "selected" : ""
                         }`}
-                        disabled={!isAvailable}
                         onClick={() => setFormData({ ...formData, time: slot })}
                         title={
                           formData.duration > 45
-                            ? `Will occupy slots: ${occupiedSlots.join(", ")}`
-                            : `Single 45-minute slot`
+                            ? `Will span slots: ${occupiedSlots.join(
+                                ", "
+                              )}\nApproved lanes: ${approvedLanes}/${MAX_LANES}`
+                            : `Approved lanes: ${approvedLanes}/${MAX_LANES}`
                         }
                       >
                         <div className="slot-time">{slot}</div>
-                        <div className="slot-availability">
-                          {isAvailable ? "Available" : "Conflicted"}
+                        <div className="slot-status">
+                          {atCapacity ? (
+                            <span className="capacity-warning">
+                              ⚠️ At Capacity
+                            </span>
+                          ) : (
+                            <span className="available">✅ Available</span>
+                          )}
+                        </div>
+                        <div className="slot-info">
+                          🎳 {approvedLanes}/{MAX_LANES} approved
                         </div>
                         {formData.duration > 45 && formData.time === slot && (
                           <div className="slot-duration">
@@ -641,6 +670,19 @@ const Booking = () => {
                       </button>
                     );
                   })}
+                </div>
+                <div className="slots-legend">
+                  <p>
+                    <span className="legend-item">
+                      <span className="legend-color available"></span>
+                      Available for booking
+                    </span>
+                    <span className="legend-item">
+                      <span className="legend-color at-capacity"></span>
+                      At capacity (6 approved bookings) - may require
+                      rescheduling
+                    </span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -656,6 +698,9 @@ const Booking = () => {
               >
                 Book {getBookingTypeLabel()}
               </button>
+              <p className="submit-note">
+                📝 Your booking will be reviewed and confirmed by our team
+              </p>
             </div>
           </form>
 
@@ -667,6 +712,7 @@ const Booking = () => {
                 <li>🎳 6 lanes available per time slot</li>
                 <li>👥 Maximum 6 people per booking</li>
                 <li>🔄 Maximum 3 rounds per booking</li>
+                <li>⏳ All bookings require admin approval</li>
                 <li>📞 For cancellation: 0566164488</li>
               </ul>
             ) : (
@@ -674,6 +720,7 @@ const Booking = () => {
                 <li>🎉 Birthday packages include multiple activities</li>
                 <li>🎳 Extended bowling sessions</li>
                 <li>🥽 VR gaming sessions included</li>
+                <li>⏳ All bookings require admin approval</li>
                 <li>📞 For cancellation: 0566164488</li>
               </ul>
             )}
@@ -683,7 +730,7 @@ const Booking = () => {
 
       <BookingConfirmationModal />
 
-      {/* Add styles for the modal */}
+      {/* Enhanced styles for the updated booking flow */}
       <style jsx>{`
         .booking-modal-overlay {
           position: fixed;
@@ -823,6 +870,88 @@ const Booking = () => {
           box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
         }
 
+        .field-note {
+          display: block;
+          font-size: 12px;
+          color: #6b7280;
+          margin-top: 4px;
+        }
+
+        .duration-info {
+          background: #e0f2fe;
+          color: #0c4a6e;
+          padding: 8px 12px;
+          border-radius: 6px;
+          font-size: 14px;
+          margin-bottom: 16px;
+          border-left: 4px solid #0284c7;
+        }
+
+        .slot.at-capacity {
+          border: 2px solid #f59e0b;
+          background: #fefce8;
+        }
+
+        .slot.at-capacity:hover {
+          background: #fef3c7;
+        }
+
+        .capacity-warning {
+          color: #f59e0b;
+          font-weight: 600;
+          font-size: 12px;
+        }
+
+        .available {
+          color: #22c55e;
+          font-weight: 600;
+          font-size: 12px;
+        }
+
+        .slot-info {
+          font-size: 11px;
+          color: #6b7280;
+          margin-top: 4px;
+        }
+
+        .slots-legend {
+          margin-top: 16px;
+          padding: 12px;
+          background: #6a7784;
+          border-radius: 8px;
+          font-size: 12px;
+        }
+
+        .legend-item {
+          display: inline-flex;
+          align-items: center;
+          margin-right: 16px;
+          margin-bottom: 4px;
+        }
+
+        .legend-color {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          margin-right: 6px;
+        }
+
+        .legend-color.available {
+          background: #22c55e;
+        }
+
+        .legend-color.at-capacity {
+          background: #f59e0b;
+        }
+
+        .submit-note {
+          text-align: center;
+          font-size: 14px;
+          color: #6b7280;
+          margin-top: 12px;
+          margin-bottom: 0;
+        }
+
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -848,13 +977,11 @@ const Booking = () => {
             margin: 20px;
             width: calc(100% - 40px);
           }
-        }
 
-        .field-note {
-          display: block;
-          font-size: 12px;
-          color: #6b7280;
-          margin-top: 4px;
+          .legend-item {
+            display: block;
+            margin-bottom: 8px;
+          }
         }
       `}</style>
     </div>

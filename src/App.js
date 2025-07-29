@@ -23,6 +23,7 @@ import JanaDashboard from "./pages/admin/JanaDashboard";
 import AddUser from "./pages/admin/AddUser";
 import ManageUsers from "./pages/admin/ManageUsers";
 import Settings from "./pages/admin/Settings";
+import MediaManagement from "./pages/admin/MediaManagement";
 
 // Validate environment variables on app startup
 try {
@@ -109,6 +110,15 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/admin/media-management"
+              element={
+                <ProtectedRoute requiredRole="jana">
+                  <MediaManagement />
+                </ProtectedRoute>
+              }
+            />
+
 
             {/* Catch-all route for 404 - must be last */}
             <Route path="*" element={<NotFound />} />
