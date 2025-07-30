@@ -354,6 +354,26 @@ const Booking = () => {
     );
   };
 
+  // Add this helper function to check if a time slot has passed today
+  const isTimeSlotPassed = (timeSlot) => {
+    const today = new Date();
+    const selectedDate = formData.date;
+
+    // Only check for current day
+    if (!isSameDay(selectedDate, today)) {
+      return false;
+    }
+
+    const currentTime = new Date();
+    const currentHours = currentTime.getHours();
+    const currentMinutes = currentTime.getMinutes();
+    const currentTotalMinutes = currentHours * 60 + currentMinutes;
+
+    const slotTotalMinutes = timeToMinutes(timeSlot);
+
+    return currentTotalMinutes >= slotTotalMinutes;
+  };
+
   // Booking Confirmation Modal Component
   const BookingConfirmationModal = () => {
     if (!showBookingModal || !bookingDetails) return null;
@@ -632,6 +652,7 @@ const Booking = () => {
                       slot,
                       formData.duration
                     );
+                    const isTimePassed = isTimeSlotPassed(slot);
 
                     return (
                       <button
@@ -639,17 +660,27 @@ const Booking = () => {
                         type="button"
                         className={`slot ${atCapacity ? "at-capacity" : ""} ${
                           formData.time === slot ? "selected" : ""
-                        }`}
-                        onClick={() => setFormData({ ...formData, time: slot })}
+                        } ${isTimePassed ? "disabled" : ""}`}
+                        onClick={() =>
+                          !isTimePassed &&
+                          setFormData({ ...formData, time: slot })
+                        }
+                        disabled={isTimePassed}
                         title={
-                          formData.duration > 45
+                          isTimePassed
+                            ? "This time slot has already passed"
+                            : formData.duration > 45
                             ? `Will span slots: ${occupiedSlots.join(", ")}`
                             : ``
                         }
                       >
                         <div className="slot-time">{slot}</div>
                         <div className="slot-status">
-                          {atCapacity ? (
+                          {isTimePassed ? (
+                            <span className="time-passed">
+                              ⏰ no longer available
+                            </span>
+                          ) : atCapacity ? (
                             <span className="capacity-warning">
                               ⚠️ At Capacity
                             </span>
@@ -887,6 +918,24 @@ const Booking = () => {
 
         .available {
           color: #22c55e;
+          font-weight: 600;
+          font-size: 12px;
+        }
+
+        .slot.disabled {
+          background: #f3f4f6;
+          border: 2px solid #d1d5db;
+          cursor: not-allowed;
+          opacity: 0.6;
+        }
+
+        .slot.disabled:hover {
+          background: #f3f4f6;
+          transform: none;
+        }
+
+        .time-passed {
+          color: #9ca3af;
           font-weight: 600;
           font-size: 12px;
         }

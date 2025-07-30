@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 import MediaViewer from "../components/MediaViewer";
 import "./Home.css";
 
@@ -12,6 +14,12 @@ const Home = () => {
   const [showCursor, setShowCursor] = useState(false);
   const [mediaViewerOpen, setMediaViewerOpen] = useState(false);
   const [selectedZone, setSelectedZone] = useState(null);
+  const [zoneImages, setZoneImages] = useState({
+    vr: "https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/VRhome_ms1faz.jpg",
+    bowling:
+      "https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/bowlingHome_zbbdgm.jpg",
+    cafe: "https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/CafeHome_ouvnt9.jpg",
+  });
 
   // Refs for scroll animation
   const zonesRef = useRef(null);
@@ -135,6 +143,27 @@ const Home = () => {
     setSelectedZone(null);
   };
 
+  // Load zone main images from Firebase
+  useEffect(() => {
+    const loadZoneImages = async () => {
+      try {
+        const mediaDoc = await getDoc(doc(db, "zoneMedia", "mediaCollection"));
+        if (mediaDoc.exists()) {
+          const mediaData = mediaDoc.data();
+          setZoneImages({
+            vr: mediaData.vr?.mainImage?.url || zoneImages.vr,
+            bowling: mediaData.bowling?.mainImage?.url || zoneImages.bowling,
+            cafe: mediaData.cafe?.mainImage?.url || zoneImages.cafe,
+          });
+        }
+      } catch (error) {
+        console.error("Error loading zone images:", error);
+      }
+    };
+
+    loadZoneImages();
+  }, []);
+
   return (
     <div className="home">
       <section className="hero">
@@ -179,10 +208,7 @@ const Home = () => {
             onClick={() => openMediaViewer("vr")}
           >
             <div className="zone-image">
-              <img
-                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/VRhome_ms1faz.jpg"
-                alt="VR Games Zone"
-              />
+              <img src={zoneImages.vr} alt="VR Games Zone" />
               <div className="zone-overlay">
                 <span className="view-gallery">📸 View Gallery</span>
               </div>
@@ -205,10 +231,7 @@ const Home = () => {
             onClick={() => openMediaViewer("bowling")}
           >
             <div className="zone-image">
-              <img
-                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/bowlingHome_zbbdgm.jpg"
-                alt="Bowling Zone"
-              />
+              <img src={zoneImages.bowling} alt="Bowling Zone" />
               <div className="zone-overlay">
                 <span className="view-gallery">📸 View Gallery</span>
               </div>
@@ -230,10 +253,7 @@ const Home = () => {
             onClick={() => openMediaViewer("cafe")}
           >
             <div className="zone-image">
-              <img
-                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/CafeHome_ouvnt9.jpg"
-                alt="Grab & Giggle Café"
-              />
+              <img src={zoneImages.cafe} alt="Grab & Giggle Café" />
               <div className="zone-overlay">
                 <span className="view-gallery">📸 View Gallery</span>
               </div>

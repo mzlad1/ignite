@@ -9,17 +9,19 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import { db } from "../../firebase"; // Updated to use existing firebase.js
+import Toast from "../../components/Toast/Toast";
 import "./MediaManagement.css";
 
 const MediaManagement = () => {
   const [selectedZone, setSelectedZone] = useState("bowling");
   const [mediaData, setMediaData] = useState({
-    bowling: { images: [], videos: [] },
-    vr: { images: [], videos: [] },
-    cafe: { images: [], videos: [] },
+    bowling: { images: [], videos: [], mainImage: null },
+    vr: { images: [], videos: [], mainImage: null },
+    cafe: { images: [], videos: [], mainImage: null },
   });
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [toast, setToast] = useState(null);
 
   const zones = {
     bowling: "🎳 Bowling Zone",
@@ -38,7 +40,13 @@ const MediaManagement = () => {
         setMediaData(mediaDoc.data());
       } else {
         // Initialize document if it doesn't exist
-        await setDoc(doc(db, "zoneMedia", "mediaCollection"), mediaData);
+        const initialData = {
+          bowling: { images: [], videos: [], mainImage: null },
+          vr: { images: [], videos: [], mainImage: null },
+          cafe: { images: [], videos: [], mainImage: null },
+        };
+        await setDoc(doc(db, "zoneMedia", "mediaCollection"), initialData);
+        setMediaData(initialData);
       }
     } catch (error) {
       console.error("Error loading media data:", error);
@@ -64,6 +72,14 @@ const MediaManagement = () => {
 
     if (!response.ok) throw new Error("Upload failed");
     return response.json();
+  };
+
+  const showToast = (message, type) => {
+    setToast({ message, type });
+  };
+
+  const hideToast = () => {
+    setToast(null);
   };
 
   const handleFileUpload = async (event) => {
@@ -100,6 +116,7 @@ const MediaManagement = () => {
       setMediaData((prev) => ({
         ...prev,
         [selectedZone]: {
+          ...prev[selectedZone],
           images: [
             ...prev[selectedZone].images,
             ...uploadedMedia.filter((m) => m.type === "image"),
@@ -110,12 +127,55 @@ const MediaManagement = () => {
           ],
         },
       }));
+
+      // Show success toast
+      const fileCount = files.length;
+      const fileText = fileCount === 1 ? "file" : "files";
+      showToast(`${fileCount} ${fileText} uploaded successfully!`, "success");
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Upload failed. Please try again.");
+      showToast("Upload failed. Please try again.", "error");
     } finally {
       setUploading(false);
       setUploadProgress(0);
+    }
+  };
+
+  const handleMainImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Check if it's an image
+    if (!file.type.startsWith("image/")) {
+      showToast("Please upload only image files for the main image.", "error");
+      return;
+    }
+
+    setUploading(true);
+    setUploadProgress(0);
+
+    try {
+      const result = await uploadToCloudinary(file, "image");
+      setUploadProgress(100);
+
+      const imageData = {
+        id: result.public_id,
+        url: result.secure_url,
+        type: "image",
+        name: file.name,
+        createdAt: new Date().toISOString(),
+      };
+
+      await setMainImage(imageData);
+      showToast("Main image uploaded successfully!", "success");
+    } catch (error) {
+      console.error("Main image upload error:", error);
+      showToast("Main image upload failed. Please try again.", "error");
+    } finally {
+      setUploading(false);
+      setUploadProgress(0);
+      // Clear the input
+      event.target.value = "";
     }
   };
 
@@ -139,6 +199,27 @@ const MediaManagement = () => {
       await updateDoc(mediaDocRef, updates);
     } catch (error) {
       console.error("Error saving media:", error);
+    }
+  };
+
+  const setMainImage = async (imageData) => {
+    try {
+      const mediaDocRef = doc(db, "zoneMedia", "mediaCollection");
+
+      await updateDoc(mediaDocRef, {
+        [`${selectedZone}.mainImage`]: imageData,
+      });
+
+      setMediaData((prev) => ({
+        ...prev,
+        [selectedZone]: {
+          ...prev[selectedZone],
+          mainImage: imageData,
+        },
+      }));
+    } catch (error) {
+      console.error("Error setting main image:", error);
+      alert("Failed to set main image. Please try again.");
     }
   };
 
@@ -178,6 +259,27 @@ const MediaManagement = () => {
     }
   };
 
+  const deleteMainImage = async () => {
+    try {
+      const mediaDocRef = doc(db, "zoneMedia", "mediaCollection");
+
+      await updateDoc(mediaDocRef, {
+        [`${selectedZone}.mainImage`]: null,
+      });
+
+      setMediaData((prev) => ({
+        ...prev,
+        [selectedZone]: {
+          ...prev[selectedZone],
+          mainImage: null,
+        },
+      }));
+    } catch (error) {
+      console.error("Error deleting main image:", error);
+      alert("Failed to delete main image. Please try again.");
+    }
+  };
+
   const deleteFromCloudinary = async (publicId, mediaType) => {
     try {
       const resourceType = mediaType === "image" ? "image" : "video";
@@ -205,6 +307,52 @@ const MediaManagement = () => {
               {name}
             </button>
           ))}
+        </div>
+
+        <div className="main-image-section">
+          <h3>Main Zone Image</h3>
+          <div className="main-image-container">
+            {mediaData[selectedZone].mainImage ? (
+              <div className="current-main-image">
+                <img
+                  src={mediaData[selectedZone].mainImage.url}
+                  alt={`${zones[selectedZone]} main image`}
+                />
+                <p>
+                  Current main image: {mediaData[selectedZone].mainImage.name}
+                </p>
+                <button
+                  className="delete-main-btn"
+                  onClick={deleteMainImage}
+                  title="Delete main image"
+                >
+                  🗑️ Remove Main Image
+                </button>
+              </div>
+            ) : (
+              <div className="no-main-image">
+                <p>No main image set for {zones[selectedZone]}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="main-image-upload">
+            <input
+              type="file"
+              id="main-image-upload"
+              accept="image/*"
+              onChange={handleMainImageUpload}
+              disabled={uploading}
+            />
+            <label
+              htmlFor="main-image-upload"
+              className={`main-upload-label ${uploading ? "disabled" : ""}`}
+            >
+              <span className="upload-icon">🖼️</span>
+              <span>Upload Main Zone Image</span>
+              <span className="upload-info">JPG, PNG supported</span>
+            </label>
+          </div>
         </div>
 
         <div className="upload-section">
@@ -242,7 +390,7 @@ const MediaManagement = () => {
 
         <div className="media-grid">
           <div className="media-section">
-            <h3>Images ({mediaData[selectedZone].images.length})</h3>
+            <h3>Gallery Images ({mediaData[selectedZone].images.length})</h3>
             <div className="media-items">
               {mediaData[selectedZone].images.map((image) => (
                 <div key={image.id} className="media-item">
@@ -280,6 +428,15 @@ const MediaManagement = () => {
           </div>
         </div>
       </div>
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+          duration={4000}
+        />
+      )}
     </div>
   );
 };
