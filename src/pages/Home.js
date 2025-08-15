@@ -15,10 +15,10 @@ const Home = () => {
   const [mediaViewerOpen, setMediaViewerOpen] = useState(false);
   const [selectedZone, setSelectedZone] = useState(null);
   const [zoneImages, setZoneImages] = useState({
-    vr: "https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/VRhome_ms1faz.jpg",
+    vr: "https://res.cloudinary.com/dxqxjaruh/image/upload/f_auto,q_auto,c_scale,w_800/v1753546803/VRhome_ms1faz.jpg",
     bowling:
-      "https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/bowlingHome_zbbdgm.jpg",
-    cafe: "https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/CafeHome_ouvnt9.jpg",
+      "https://res.cloudinary.com/dxqxjaruh/image/upload/f_auto,q_auto,c_scale,w_800/v1753546486/bowlingHome_zbbdgm.jpg",
+    cafe: "https://res.cloudinary.com/dxqxjaruh/image/upload/f_auto,q_auto,c_scale,w_800/v1753546486/CafeHome_ouvnt9.jpg",
   });
 
   // Refs for scroll animation
@@ -171,7 +171,7 @@ const Home = () => {
           <div className="hero-content">
             <div className="logo-container">
               <img
-                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546487/logo_gdmnno.png"
+                src="https://res.cloudinary.com/dxqxjaruh/image/upload/f_auto,q_auto,c_scale,w_400/v1753546487/logo_gdmnno.png"
                 alt="Ignite Arcade Logo"
                 className="hero-logo"
               />
@@ -289,7 +289,7 @@ const Home = () => {
             </div>
             <div className="info-image scroll-animate-child">
               <img
-                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546487/GetToKnowUs_x3wsox.jpg"
+                src="https://res.cloudinary.com/dxqxjaruh/image/upload/f_auto,q_auto,c_scale,w_1200/v1753546487/GetToKnowUs_x3wsox.jpg"
                 alt="Get to Know Us"
               />
             </div>
@@ -365,7 +365,7 @@ const Home = () => {
           <div className="footer-content">
             <div className="footer-left scroll-animate-child">
               <img
-                src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546487/logo_gdmnno.png"
+                src="https://res.cloudinary.com/dxqxjaruh/image/upload/f_auto,q_auto,c_scale,w_400/v1753546487/logo_gdmnno.png"
                 alt="Ignite Arcade"
                 className="footer-logo"
               />

@@ -36,7 +36,7 @@ const Offers = () => {
         <div className="characters-intro">
           <div className="character-card">
             <img
-              src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546486/Enzo1_wxl5jb.png"
+              src="https://res.cloudinary.com/dxqxjaruh/image/upload/f_auto,q_auto,c_scale,w_400/v1753546486/Enzo1_wxl5jb.png"
               alt="Enzo"
               className="character-img"
             />
@@ -45,7 +45,7 @@ const Offers = () => {
           </div>
           <div className="character-card">
             <img
-              src="https://res.cloudinary.com/dxqxjaruh/image/upload/v1753546803/zoe1_uqewcu.png"
+              src="https://res.cloudinary.com/dxqxjaruh/image/upload/f_auto,q_auto,c_scale,w_400/v1753546803/zoe1_uqewcu.png"
               alt="Zoe"
               className="character-img"
             />
