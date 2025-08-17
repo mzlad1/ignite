@@ -8,6 +8,7 @@ const MediaViewer = ({ isOpen, onClose, zoneName }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentType, setCurrentType] = useState("images");
   const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
 
   const zoneMapping = {
     bowling: "bowling",
@@ -44,6 +45,22 @@ const MediaViewer = ({ isOpen, onClose, zoneName }) => {
   const getCurrentMedia = () => {
     return mediaData[currentType] || [];
   };
+
+  const handleImageLoad = () => {
+    setImageLoading(false);
+  };
+
+  const handleImageError = () => {
+    setImageLoading(false);
+    console.error("Failed to load image");
+  };
+
+  // Reset image loading when switching images or media type
+  useEffect(() => {
+    if (currentType === "images") {
+      setImageLoading(true);
+    }
+  }, [currentIndex, currentType]);
 
   const currentMedia = getCurrentMedia();
   const totalItems = currentMedia.length;
@@ -143,10 +160,21 @@ const MediaViewer = ({ isOpen, onClose, zoneName }) => {
               <div className="media-display">
                 {currentMedia[currentIndex] &&
                   (currentType === "images" ? (
-                    <img
-                      src={currentMedia[currentIndex].url}
-                      alt={`${zoneName} ${currentIndex + 1}`}
-                    />
+                    <div className="image-container">
+                      {imageLoading && (
+                        <div className="media-image-loading">
+                          <div className="media-loading-spinner"></div>
+                          <span>Loading image...</span>
+                        </div>
+                      )}
+                      <img
+                        src={currentMedia[currentIndex].url}
+                        alt={`${zoneName} ${currentIndex + 1}`}
+                        onLoad={handleImageLoad}
+                        onError={handleImageError}
+                        style={{ display: imageLoading ? "none" : "block" }}
+                      />
+                    </div>
                   ) : (
                     <video
                       src={currentMedia[currentIndex].url}

@@ -512,6 +512,50 @@
   box-shadow: 0 12px 30px var(--shadow-dark);
 }
 
+.menu .menu-image-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--cosmic-dark), var(--space-navy));
+  border-radius: 15px;
+  border: 2px solid rgba(255, 127, 0, 0.3);
+  z-index: 2;
+}
+
+.menu .menu-loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(255, 127, 0, 0.2);
+  border-top: 3px solid var(--aurora-orange);
+  border-radius: 50%;
+  animation: menuSpinLoader 1s linear infinite;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes menuSpinLoader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.menu .menu-image-loading span {
+  color: var(--aurora-orange);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  opacity: 0.8;
+  font-family: "Fredoka", sans-serif;
+}
+
 /* Enhanced Item Title */
 .menu .menu-item h3 {
   font-size: clamp(1.4rem, 3vw, 1.6rem);

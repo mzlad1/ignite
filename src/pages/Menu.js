@@ -8,6 +8,7 @@ import "./Menu.css";
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [imageLoading, setImageLoading] = useState({});
 
   const responsive = {
     superLargeDesktop: {
@@ -69,13 +70,39 @@ const Menu = () => {
   const fetchMenuItems = async () => {
     try {
       const menuSnapshot = await getDocs(collection(db, "menu"));
-      setMenuItems(
-        menuSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-      );
+      const items = menuSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setMenuItems(items);
+
+      // Initialize loading state for all images
+      const initialLoadingState = {};
+      items.forEach((item) => {
+        if (item.image && item.image.startsWith("http")) {
+          initialLoadingState[item.id] = true;
+        }
+      });
+      setImageLoading(initialLoadingState);
     } catch (error) {
       console.error("Error fetching menu items:", error);
     }
     setLoading(false);
+  };
+
+  const handleImageLoad = (itemId) => {
+    setImageLoading((prev) => ({
+      ...prev,
+      [itemId]: false,
+    }));
+  };
+
+  const handleImageError = (itemId) => {
+    setImageLoading((prev) => ({
+      ...prev,
+      [itemId]: false,
+    }));
+    console.error(`Failed to load image for menu item: ${itemId}`);
   };
 
   return (
@@ -112,16 +139,27 @@ const Menu = () => {
                 <div key={item.id} className="menu-item">
                   <div className="item-image">
                     {item.image.startsWith("http") ? (
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        style={{
-                          width: "100%",
-                          height: "auto",
-                          objectFit: "cover",
-                          borderRadius: "8px",
-                        }}
-                      />
+                      <div className="menu-image-container">
+                        {imageLoading[item.id] && (
+                          <div className="menu-image-loading">
+                            <div className="menu-loading-spinner"></div>
+                            <span>Loading...</span>
+                          </div>
+                        )}
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          onLoad={() => handleImageLoad(item.id)}
+                          onError={() => handleImageError(item.id)}
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            objectFit: "cover",
+                            borderRadius: "8px",
+                            display: imageLoading[item.id] ? "none" : "block",
+                          }}
+                        />
+                      </div>
                     ) : (
                       <span>{item.image}</span>
                     )}

@@ -20,6 +20,11 @@ const Home = () => {
       "https://res.cloudinary.com/dxqxjaruh/image/upload/f_auto,q_auto,c_scale,w_800/v1753546486/bowlingHome_zbbdgm.jpg",
     cafe: "https://res.cloudinary.com/dxqxjaruh/image/upload/f_auto,q_auto,c_scale,w_800/v1753546486/CafeHome_ouvnt9.jpg",
   });
+  const [imageLoading, setImageLoading] = useState({
+    vr: true,
+    bowling: true,
+    cafe: true,
+  });
 
   // Refs for scroll animation
   const zonesRef = useRef(null);
@@ -143,6 +148,21 @@ const Home = () => {
     setSelectedZone(null);
   };
 
+  const handleImageLoad = (zoneName) => {
+    setImageLoading((prev) => ({
+      ...prev,
+      [zoneName]: false,
+    }));
+  };
+
+  const handleImageError = (zoneName) => {
+    console.error(`Failed to load ${zoneName} image`);
+    setImageLoading((prev) => ({
+      ...prev,
+      [zoneName]: false,
+    }));
+  };
+
   // Load zone main images from Firebase
   useEffect(() => {
     const loadZoneImages = async () => {
@@ -150,14 +170,29 @@ const Home = () => {
         const mediaDoc = await getDoc(doc(db, "zoneMedia", "mediaCollection"));
         if (mediaDoc.exists()) {
           const mediaData = mediaDoc.data();
-          setZoneImages({
+          const newImages = {
             vr: mediaData.vr?.mainImage?.url || zoneImages.vr,
             bowling: mediaData.bowling?.mainImage?.url || zoneImages.bowling,
             cafe: mediaData.cafe?.mainImage?.url || zoneImages.cafe,
+          };
+
+          // Reset loading states when new images are set
+          setImageLoading({
+            vr: true,
+            bowling: true,
+            cafe: true,
           });
+
+          setZoneImages(newImages);
         }
       } catch (error) {
         console.error("Error loading zone images:", error);
+        // Set loading to false on error
+        setImageLoading({
+          vr: false,
+          bowling: false,
+          cafe: false,
+        });
       }
     };
 
@@ -208,7 +243,19 @@ const Home = () => {
             onClick={() => openMediaViewer("vr")}
           >
             <div className="zone-image">
-              <img src={zoneImages.vr} alt="VR Games Zone" />
+              {imageLoading.vr && (
+                <div className="image-loading">
+                  <div className="loading-spinner"></div>
+                  <span>Loading VR Zone...</span>
+                </div>
+              )}
+              <img
+                src={zoneImages.vr}
+                alt="VR Games Zone"
+                onLoad={() => handleImageLoad("vr")}
+                onError={() => handleImageError("vr")}
+                style={{ display: imageLoading.vr ? "none" : "block" }}
+              />
               <div className="zone-overlay">
                 <span className="view-gallery">📸 View Gallery</span>
               </div>
@@ -231,7 +278,19 @@ const Home = () => {
             onClick={() => openMediaViewer("bowling")}
           >
             <div className="zone-image">
-              <img src={zoneImages.bowling} alt="Bowling Zone" />
+              {imageLoading.bowling && (
+                <div className="image-loading">
+                  <div className="loading-spinner"></div>
+                  <span>Loading Bowling Zone...</span>
+                </div>
+              )}
+              <img
+                src={zoneImages.bowling}
+                alt="Bowling Zone"
+                onLoad={() => handleImageLoad("bowling")}
+                onError={() => handleImageError("bowling")}
+                style={{ display: imageLoading.bowling ? "none" : "block" }}
+              />
               <div className="zone-overlay">
                 <span className="view-gallery">📸 View Gallery</span>
               </div>
@@ -253,7 +312,19 @@ const Home = () => {
             onClick={() => openMediaViewer("cafe")}
           >
             <div className="zone-image">
-              <img src={zoneImages.cafe} alt="Grab & Giggle Café" />
+              {imageLoading.cafe && (
+                <div className="image-loading">
+                  <div className="loading-spinner"></div>
+                  <span>Loading Cafe Zone...</span>
+                </div>
+              )}
+              <img
+                src={zoneImages.cafe}
+                alt="Grab & Giggle Café"
+                onLoad={() => handleImageLoad("cafe")}
+                onError={() => handleImageError("cafe")}
+                style={{ display: imageLoading.cafe ? "none" : "block" }}
+              />
               <div className="zone-overlay">
                 <span className="view-gallery">📸 View Gallery</span>
               </div>
