@@ -193,6 +193,12 @@ const JanaDashboard = () => {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [bookingToReject, setBookingToReject] = useState(null);
 
+  // Booking pagination states
+  const [bookingPage, setBookingPage] = useState(1);
+  const [bookingsPerPage] = useState(10); // Adjustable bookings per page
+  const [bookingSearchTerm, setBookingSearchTerm] = useState("");
+  const [bookingSortBy, setBookingSortBy] = useState("newest"); // newest, oldest, name, date
+
   // Menu pagination states
   const [menuPage, setMenuPage] = useState(1);
   const [menuItemsPerPage] = useState(12); // Adjustable items per page
@@ -814,6 +820,80 @@ const JanaDashboard = () => {
     return bookings.filter((booking) => booking.status === bookingFilter);
   };
 
+  // Enhanced booking filtering and sorting
+  const getFilteredAndSortedBookings = () => {
+    let filtered = getFilteredBookings();
+
+    // Apply search filter
+    if (bookingSearchTerm) {
+      filtered = filtered.filter(
+        (booking) =>
+          booking.name
+            .toLowerCase()
+            .includes(bookingSearchTerm.toLowerCase()) ||
+          booking.phone.includes(bookingSearchTerm) ||
+          booking.email
+            ?.toLowerCase()
+            .includes(bookingSearchTerm.toLowerCase()) ||
+          booking.date.includes(bookingSearchTerm)
+      );
+    }
+
+    // Apply sorting
+    switch (bookingSortBy) {
+      case "newest":
+        filtered.sort((a, b) => {
+          const dateA = a.createdAt?.toDate?.() || new Date(0);
+          const dateB = b.createdAt?.toDate?.() || new Date(0);
+          return dateB - dateA;
+        });
+        break;
+      case "oldest":
+        filtered.sort((a, b) => {
+          const dateA = a.createdAt?.toDate?.() || new Date(0);
+          const dateB = b.createdAt?.toDate?.() || new Date(0);
+          return dateA - dateB;
+        });
+        break;
+      case "name":
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "date":
+        filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+        break;
+      default:
+        break;
+    }
+
+    return filtered;
+  };
+
+  // Paginated bookings
+  const getPaginatedBookings = () => {
+    const filtered = getFilteredAndSortedBookings();
+    const startIndex = (bookingPage - 1) * bookingsPerPage;
+    const endIndex = startIndex + bookingsPerPage;
+    return filtered.slice(startIndex, endIndex);
+  };
+
+  // Booking pagination info
+  const getBookingPaginationInfo = () => {
+    const totalBookings = getFilteredAndSortedBookings().length;
+    const totalPages = Math.ceil(totalBookings / bookingsPerPage);
+    const startIndex = (bookingPage - 1) * bookingsPerPage + 1;
+    const endIndex = Math.min(bookingPage * bookingsPerPage, totalBookings);
+
+    return {
+      totalBookings,
+      totalPages,
+      currentPage: bookingPage,
+      startIndex,
+      endIndex,
+      hasNextPage: bookingPage < totalPages,
+      hasPrevPage: bookingPage > 1,
+    };
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case "pending":
@@ -914,6 +994,11 @@ const JanaDashboard = () => {
     setMenuPage(1);
   }, [menuSearchTerm]);
 
+  // Reset booking pagination when filters change
+  useEffect(() => {
+    setBookingPage(1);
+  }, [bookingFilter, bookingSearchTerm, bookingSortBy]);
+
   return (
     <div className="jana-dashboard">
       <div className="container">
@@ -1012,8 +1097,63 @@ const JanaDashboard = () => {
               </div>
             </div>
 
+            {/* Search and Sort Controls */}
+            <div className="booking-controls">
+              <div className="booking-search-container">
+                <input
+                  type="text"
+                  placeholder="🔍 Search by name, phone, email, or date..."
+                  value={bookingSearchTerm}
+                  onChange={(e) => setBookingSearchTerm(e.target.value)}
+                  className="booking-search-input"
+                />
+                {bookingSearchTerm && (
+                  <button
+                    onClick={() => setBookingSearchTerm("")}
+                    className="clear-search"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              <div className="booking-sort-container">
+                <label>Sort by:</label>
+                <select
+                  value={bookingSortBy}
+                  onChange={(e) => setBookingSortBy(e.target.value)}
+                  className="booking-sort-select"
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="name">Name A-Z</option>
+                  <option value="date">Booking Date</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Pagination Info */}
+            {(() => {
+              const paginationInfo = getBookingPaginationInfo();
+              return (
+                <div className="booking-pagination-info">
+                  <span>
+                    Showing {paginationInfo.startIndex}-
+                    {paginationInfo.endIndex} of {paginationInfo.totalBookings}{" "}
+                    bookings
+                  </span>
+                  {paginationInfo.totalPages > 1 && (
+                    <span>
+                      Page {paginationInfo.currentPage} of{" "}
+                      {paginationInfo.totalPages}
+                    </span>
+                  )}
+                </div>
+              );
+            })()}
+
             <div className="bookings-list">
-              {getFilteredBookings().map((booking) => (
+              {getPaginatedBookings().map((booking) => (
                 <div key={booking.id} className="booking-card">
                   {editingBooking === booking.id ? (
                     <div className="edit-form">
@@ -1141,6 +1281,83 @@ const JanaDashboard = () => {
                 </div>
               ))}
             </div>
+
+            {/* Pagination Controls */}
+            {(() => {
+              const paginationInfo = getBookingPaginationInfo();
+              if (paginationInfo.totalPages <= 1) return null;
+
+              return (
+                <div className="booking-pagination">
+                  <button
+                    onClick={() => setBookingPage(1)}
+                    disabled={!paginationInfo.hasPrevPage}
+                    className="pagination-btn"
+                  >
+                    ⟪ First
+                  </button>
+
+                  <button
+                    onClick={() => setBookingPage(bookingPage - 1)}
+                    disabled={!paginationInfo.hasPrevPage}
+                    className="pagination-btn"
+                  >
+                    ‹ Previous
+                  </button>
+
+                  <div className="pagination-pages">
+                    {Array.from(
+                      { length: Math.min(5, paginationInfo.totalPages) },
+                      (_, i) => {
+                        let pageNum;
+                        if (paginationInfo.totalPages <= 5) {
+                          pageNum = i + 1;
+                        } else if (paginationInfo.currentPage <= 3) {
+                          pageNum = i + 1;
+                        } else if (
+                          paginationInfo.currentPage >=
+                          paginationInfo.totalPages - 2
+                        ) {
+                          pageNum = paginationInfo.totalPages - 4 + i;
+                        } else {
+                          pageNum = paginationInfo.currentPage - 2 + i;
+                        }
+
+                        return (
+                          <button
+                            key={pageNum}
+                            onClick={() => setBookingPage(pageNum)}
+                            className={`pagination-btn ${
+                              pageNum === paginationInfo.currentPage
+                                ? "active"
+                                : ""
+                            }`}
+                          >
+                            {pageNum}
+                          </button>
+                        );
+                      }
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => setBookingPage(bookingPage + 1)}
+                    disabled={!paginationInfo.hasNextPage}
+                    className="pagination-btn"
+                  >
+                    Next ›
+                  </button>
+
+                  <button
+                    onClick={() => setBookingPage(paginationInfo.totalPages)}
+                    disabled={!paginationInfo.hasNextPage}
+                    className="pagination-btn"
+                  >
+                    Last ⟫
+                  </button>
+                </div>
+              );
+            })()}
           </div>
         )}
 
@@ -1812,7 +2029,6 @@ const JanaDashboard = () => {
         .lane-text {
           font-size: 14px;
           font-weight: 500;
-          color: #374151;
         }
 
         .capacity-full {
@@ -1963,6 +2179,128 @@ const JanaDashboard = () => {
 
         .confirm-reject-btn:hover:not(:disabled) {
           background: #dc2626;
+        }
+
+        .booking-controls {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+          gap: 1rem;
+          flex-wrap: wrap;
+          padding: 1rem;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .booking-search-container {
+          position: relative;
+          flex: 1;
+          max-width: 400px;
+        }
+
+        .booking-search-input {
+          width: 100%;
+          padding: 12px 16px;
+          border: 2px solid rgba(255, 127, 0, 0.3);
+          border-radius: 25px;
+          background: rgba(255, 255, 255, 0.9);
+          font-size: 16px;
+          font-family: inherit;
+          transition: all 0.3s ease;
+        }
+
+        .booking-search-input:focus {
+          outline: none;
+          border-color: var(--aurora-orange);
+          box-shadow: 0 0 0 4px rgba(255, 127, 0, 0.1);
+        }
+
+        .booking-sort-container {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .booking-sort-container label {
+          font-size: 14px;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        .booking-sort-select {
+          padding: 8px 12px;
+          border: 2px solid rgba(255, 127, 0, 0.3);
+          border-radius: 6px;
+          background: rgba(255, 255, 255, 0.9);
+          font-size: 14px;
+          font-family: inherit;
+          cursor: pointer;
+        }
+
+        .booking-sort-select:focus {
+          outline: none;
+          border-color: var(--aurora-orange);
+        }
+
+        .booking-pagination-info {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+          padding: 0.5rem 1rem;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 6px;
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        .booking-pagination {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+          margin-top: 2rem;
+          padding: 1rem;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pagination-btn {
+          padding: 8px 12px;
+          border: 2px solid rgba(255, 127, 0, 0.3);
+          background: rgba(255, 255, 255, 0.9);
+          border-radius: 6px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-size: 14px;
+          font-family: inherit;
+          min-width: 40px;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+          background: rgba(255, 127, 0, 0.1);
+          border-color: var(--aurora-orange);
+          color: var(--aurora-orange);
+        }
+
+        .pagination-btn.active {
+          background: var(--aurora-orange);
+          color: white;
+          border-color: var(--aurora-orange);
+        }
+
+        .pagination-btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          background: rgba(255, 255, 255, 0.5);
+        }
+
+        .pagination-pages {
+          display: flex;
+          gap: 4px;
         }
 
         .menu-controls {
@@ -2194,6 +2532,37 @@ const JanaDashboard = () => {
             flex-direction: column;
             align-items: flex-start;
             gap: 4px;
+          }
+
+          .booking-controls {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+          }
+
+          .booking-search-container {
+            max-width: none;
+          }
+
+          .booking-sort-container {
+            justify-content: space-between;
+          }
+
+          .booking-pagination {
+            flex-wrap: wrap;
+            gap: 4px;
+          }
+
+          .pagination-btn {
+            font-size: 12px;
+            padding: 6px 10px;
+            min-width: 35px;
+          }
+
+          .booking-pagination-info {
+            flex-direction: column;
+            gap: 4px;
+            text-align: center;
           }
         }
 
