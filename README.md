@@ -6,6 +6,19 @@ A modern, full-featured web application for a bowling and arcade entertainment c
 
 ## 🌟 Features
 
+- **Interactive Home Page** with animated cosmic theme and character integration
+- **Menu Display** with dynamic food and beverage items
+
+- **Role-based Authentication System** (Manager/Reception Staff)
+- **Comprehensive Booking Management** with email notifications
+
+- **Cosmic Theme** with animated backgrounds and floating elements
+- **Character Integration** featuring Enzo and Zoe mascots throughout the site
+
+### Frontend
+
+## 🌟 Features
+
 ### 🎮 Customer Features
 
 - **Interactive Home Page** with animated cosmic theme and character integration
@@ -16,6 +29,7 @@ A modern, full-featured web application for a bowling and arcade entertainment c
 - **Customer Feedback System** with star ratings and like/dislike functionality
 - **FAQ Section** with expandable questions and answers
 - **Responsive Design** optimized for all devices
+- **Client-side Caching** for faster page loads and reduced network usage
 
 ### 👨‍💼 Admin Features
 
@@ -28,6 +42,7 @@ A modern, full-featured web application for a bowling and arcade entertainment c
 - **FAQ Content Management** system
 - **User Management** for admin accounts
 - **Reception Calendar** for daily booking overview
+- **Admin Data Caching** for improved dashboard performance
 
 ### 🎨 Design Features
 
@@ -38,14 +53,12 @@ A modern, full-featured web application for a bowling and arcade entertainment c
 - **Mobile-first Responsive Design** with optimized layouts
 - **Custom CSS** with advanced keyframe animations
 
-## 🚀 Technology Stack
-
-### Frontend
-
 - **React.js 18.x** - Modern React with hooks and functional components
 - **React Router v6** - Client-side routing with protected routes
 - **CSS3** - Custom styling with advanced animations and responsive design
 - **React Calendar** - Interactive calendar component for bookings
+
+### Key Libraries
 
 ### Backend & Services
 
@@ -53,6 +66,7 @@ A modern, full-featured web application for a bowling and arcade entertainment c
 - **Firestore Database** - NoSQL database for real-time data management
 - **EmailJS** - Email service for booking confirmations and notifications
 - **Cloudinary** - Image hosting and optimization service
+- **Custom Cache Service** - Local and Firestore-based caching for app data and images
 
 ### Key Libraries
 
@@ -60,6 +74,7 @@ A modern, full-featured web application for a bowling and arcade entertainment c
 - **Firebase SDK** - Backend services integration
 - **EmailJS** - Email functionality
 - **React Calendar** - Date picker component
+- **LocalForage** (or similar) - Client-side caching
 
 ## 📋 Prerequisites
 
@@ -77,7 +92,6 @@ Before running this project, make sure you have:
 
 ```bash
 git clone <repository-url>
-cd bowlingReact
 ```
 
 ### 2. Install Dependencies
@@ -114,10 +128,16 @@ export const db = getFirestore(app);
 Update the email service configuration in `src/services/emailService.js`:
 
 ```javascript
+
+## 🗂️ Project Structure
+
+```
+
 const EMAIL_SERVICE_ID = "your-emailjs-service-id";
 const EMAIL_TEMPLATE_ID_APPROVAL = "your-approval-template-id";
 const EMAIL_TEMPLATE_ID_REJECTION = "your-rejection-template-id";
-```
+
+````
 
 ### 5. Cloudinary Configuration
 
@@ -127,7 +147,7 @@ Update the Cloudinary settings in `src/pages/admin/JanaDashboard.js`:
 formData.append("upload_preset", "your-upload-preset");
 // Replace with your cloud name
 ("https://api.cloudinary.com/v1_1/your-cloud-name/image/upload");
-```
+````
 
 ### 6. Start the Development Server
 
@@ -312,8 +332,6 @@ firebase deploy
 - **Vercel** - Connect your repository for automatic deployments
 - **GitHub Pages** - Use gh-pages package for GitHub hosting
 
-## 🐛 Troubleshooting
-
 ### Common Issues
 
 1. **Firebase Connection Issues**
@@ -338,6 +356,39 @@ firebase deploy
    - Verify Firebase Auth configuration
    - Check user roles in Firestore
    - Ensure proper route protection
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Firebase Connection Issues**
+
+   - Verify firebaseConfig settings
+   - Check Firebase project permissions
+   - Ensure Firestore rules allow read/write
+
+2. **Email Service Not Working**
+
+   - Verify EmailJS service ID and template IDs
+   - Check EmailJS account limits
+   - Ensure email templates are published
+
+3. **Image Upload Failures**
+
+   - Verify Cloudinary upload preset
+   - Check file size limits
+   - Ensure proper CORS settings
+
+4. **Authentication Issues**
+
+   - Verify Firebase Auth configuration
+   - Check user roles in Firestore
+   - Ensure proper route protection
+
+5. **Cache Issues**
+   - If cached data is outdated, clear browser cache or use provided cache reset options in the admin dashboard.
+   - Ensure cache services are properly initialized in `src/services/cache/`.
+   - For Firestore-based cache, verify Firestore rules and network connectivity.
 
 ## 🤝 Contributing
 

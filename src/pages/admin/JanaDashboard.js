@@ -2366,7 +2366,6 @@ const JanaDashboard = () => {
           overflow-y: auto;
           padding-right: 8px;
           scroll-behavior: smooth;
-          overflow: hidden;
         }
 
         .menu-list {
