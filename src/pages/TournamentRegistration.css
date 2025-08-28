@@ -376,6 +376,15 @@
   animation: tournament-errorSlide 0.3s ease-out;
 }
 
+.tournament-help-text {
+  display: block;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.7rem;
+  font-weight: 400;
+  margin-top: 0.3rem;
+  font-style: italic;
+}
+
 @keyframes tournament-errorSlide {
   from {
     opacity: 0;

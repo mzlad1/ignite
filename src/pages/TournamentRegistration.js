@@ -22,11 +22,33 @@ const TournamentRegistration = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
+  // Function to convert Arabic numerals to English numerals
+  const convertArabicToEnglish = (text) => {
+    const arabicNumerals = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+    const englishNumerals = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+    let converted = text;
+    arabicNumerals.forEach((arabic, index) => {
+      converted = converted.replace(
+        new RegExp(arabic, "g"),
+        englishNumerals[index]
+      );
+    });
+    return converted;
+  };
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    // Convert Arabic numerals to English for age fields
+    let processedValue = value;
+    if (name === "player1Age" || name === "player2Age") {
+      processedValue = convertArabicToEnglish(value);
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : processedValue,
     }));
 
     // Clear error when user starts typing
@@ -50,7 +72,7 @@ const TournamentRegistration = () => {
     }
 
     if (!formData.player1Age.trim()) {
-      newErrors.player1Name = "عمر اللاعب الأول مطلوب";
+      newErrors.player1Age = "عمر اللاعب الأول مطلوب";
     } else if (
       isNaN(formData.player1Age) ||
       formData.player1Age < 10 ||
@@ -351,7 +373,7 @@ const TournamentRegistration = () => {
                               name="player1Age"
                               value={formData.player1Age}
                               onChange={handleInputChange}
-                              placeholder="العمر"
+                              placeholder="ادخل عمرك"
                               min="10"
                               max="100"
                               className={errors.player1Age ? "error" : ""}
@@ -396,7 +418,7 @@ const TournamentRegistration = () => {
                               name="player2Age"
                               value={formData.player2Age}
                               onChange={handleInputChange}
-                              placeholder="العمر"
+                              placeholder="ادخل عمرك"
                               min="10"
                               max="100"
                               className={errors.player2Age ? "error" : ""}
