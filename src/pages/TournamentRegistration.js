@@ -22,33 +22,12 @@ const TournamentRegistration = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Function to convert Arabic numerals to English numerals
-  const convertArabicToEnglish = (text) => {
-    const arabicNumerals = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-    const englishNumerals = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-    let converted = text;
-    arabicNumerals.forEach((arabic, index) => {
-      converted = converted.replace(
-        new RegExp(arabic, "g"),
-        englishNumerals[index]
-      );
-    });
-    return converted;
-  };
-
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    // Convert Arabic numerals to English for age fields
-    let processedValue = value;
-    if (name === "player1Age" || name === "player2Age") {
-      processedValue = convertArabicToEnglish(value);
-    }
-
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : processedValue,
+      [name]: type === "checkbox" ? checked : value,
     }));
 
     // Clear error when user starts typing
@@ -73,12 +52,6 @@ const TournamentRegistration = () => {
 
     if (!formData.player1Age.trim()) {
       newErrors.player1Age = "عمر اللاعب الأول مطلوب";
-    } else if (
-      isNaN(formData.player1Age) ||
-      formData.player1Age < 10 ||
-      formData.player1Age > 100
-    ) {
-      newErrors.player1Age = "يرجى إدخال عمر صحيح";
     }
 
     if (!formData.player2Name.trim()) {
@@ -87,12 +60,6 @@ const TournamentRegistration = () => {
 
     if (!formData.player2Age.trim()) {
       newErrors.player2Age = "عمر اللاعب الثاني مطلوب";
-    } else if (
-      isNaN(formData.player2Age) ||
-      formData.player2Age < 10 ||
-      formData.player2Age > 100
-    ) {
-      newErrors.player2Age = "يرجى إدخال عمر صحيح";
     }
 
     if (!formData.contactNumber.trim()) {
@@ -368,14 +335,12 @@ const TournamentRegistration = () => {
                           <div className="tournament-form-group">
                             <label htmlFor="player1Age">العمر *</label>
                             <input
-                              type="number"
+                              type="text"
                               id="player1Age"
                               name="player1Age"
                               value={formData.player1Age}
                               onChange={handleInputChange}
                               placeholder="ادخل عمرك"
-                              min="10"
-                              max="100"
                               className={errors.player1Age ? "error" : ""}
                               disabled={loading}
                             />
@@ -413,14 +378,12 @@ const TournamentRegistration = () => {
                           <div className="tournament-form-group">
                             <label htmlFor="player2Age">العمر *</label>
                             <input
-                              type="number"
+                              type="text"
                               id="player2Age"
                               name="player2Age"
                               value={formData.player2Age}
                               onChange={handleInputChange}
                               placeholder="ادخل عمرك"
-                              min="10"
-                              max="100"
                               className={errors.player2Age ? "error" : ""}
                               disabled={loading}
                             />
