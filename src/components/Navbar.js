@@ -124,12 +124,22 @@ const Navbar = () => {
           <Link to="/offers" className="nav-link" onClick={closeMobileMenu}>
             Offers
           </Link>
+          <Link to="/tournament" className="nav-link" onClick={closeMobileMenu}>
+            Tournament
+          </Link>
           <Link to="/booking" className="nav-link" onClick={closeMobileMenu}>
             Book Now
           </Link>
 
           {/* Mobile: Show as regular links */}
           <div className="mobile-only">
+            <Link
+              to="/tournament"
+              className="nav-link"
+              onClick={closeMobileMenu}
+            >
+              Tournament
+            </Link>
             <Link to="/feedback" className="nav-link" onClick={closeMobileMenu}>
               Feedback
             </Link>

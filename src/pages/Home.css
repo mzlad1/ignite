@@ -1835,3 +1835,35 @@ html {
   font-size: 1.1rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+/* Tournament CTA Button Styles */
+.tournament-cta {
+  background: linear-gradient(135deg, #6b46c1, #8b5cf6);
+}
+
+.tournament-cta:hover {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(107, 70, 193, 0.3);
+}
+
+@keyframes tournament-cta-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Responsive adjustments for tournament CTA */
+@media (max-width: 768px) {
+  .cta-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .tournament-cta {
+    margin-left: 0;
+  }
+}

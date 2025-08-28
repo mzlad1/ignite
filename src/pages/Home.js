@@ -227,6 +227,9 @@ const Home = () => {
               <Link to="/booking" className="cta-button">
                 Book Your Session
               </Link>
+              <Link to="/tournament" className="cta-button tournament-cta">
+                Join Tournament
+              </Link>
             </div>
           </div>
         </div>

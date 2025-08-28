@@ -37,9 +37,9 @@ const AdminLogin = () => {
         if (from && from.startsWith("/admin/")) {
           // Check if user has permission for the requested route
           if (from === "/admin/jana" && userData.role !== "jana") {
-            navigate("/admin/calendar"); // Redirect reception users to calendar
+            navigate("/admin/dashboard"); // Redirect reception users to calendar
           } else if (
-            from === "/admin/calendar" &&
+            from === "/admin/dashboard" &&
             userData.role !== "reception"
           ) {
             navigate("/admin/dashboard"); // Redirect jana to admin dashboard
