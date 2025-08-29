@@ -133,13 +133,6 @@ const Navbar = () => {
 
           {/* Mobile: Show as regular links */}
           <div className="mobile-only">
-            <Link
-              to="/tournament"
-              className="nav-link"
-              onClick={closeMobileMenu}
-            >
-              Tournament
-            </Link>
             <Link to="/feedback" className="nav-link" onClick={closeMobileMenu}>
               Feedback
             </Link>
