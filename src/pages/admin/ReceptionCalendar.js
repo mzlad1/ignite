@@ -6,12 +6,14 @@ import "./ReceptionCalendar.css";
 const ReceptionCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [bookings, setBookings] = useState([]);
+  const [allBookings, setAllBookings] = useState([]); // Store all bookings for the month
   const [searchName, setSearchName] = useState("");
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   useEffect(() => {
     fetchBookings();
-  }, [selectedDate]);
+    fetchAllBookingsForMonth();
+  }, [selectedDate, currentMonth]);
 
   const fetchBookings = async () => {
     const dateStr = selectedDate.toDateString();
@@ -24,10 +26,57 @@ const ReceptionCalendar = () => {
     setBookings(bookingsList);
   };
 
+  const fetchAllBookingsForMonth = async () => {
+    try {
+      // Get the first and last day of the current month
+      const firstDay = new Date(
+        currentMonth.getFullYear(),
+        currentMonth.getMonth(),
+        1
+      );
+      const lastDay = new Date(
+        currentMonth.getFullYear(),
+        currentMonth.getMonth() + 1,
+        0
+      );
+
+      // Fetch all bookings for the entire month
+      const q = query(collection(db, "bookings"));
+      const querySnapshot = await getDocs(q);
+
+      const allBookingsList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Filter bookings for the current month
+      const monthBookings = allBookingsList.filter((booking) => {
+        const bookingDate = new Date(booking.date);
+        return bookingDate >= firstDay && bookingDate <= lastDay;
+      });
+
+      setAllBookings(monthBookings);
+    } catch (error) {
+      console.error("Error fetching month bookings:", error);
+    }
+  };
+
   // Filter bookings based on search name
   const filteredBookings = bookings.filter((booking) =>
     booking.name.toLowerCase().includes(searchName.toLowerCase())
   );
+
+  // Check if a specific date has any bookings
+  const hasBookingsOnDate = (date) => {
+    const dateStr = date.toDateString();
+    return allBookings.some((booking) => booking.date === dateStr);
+  };
+
+  // Get booking count for a specific date
+  const getBookingCountForDate = (date) => {
+    const dateStr = date.toDateString();
+    return allBookings.filter((booking) => booking.date === dateStr).length;
+  };
 
   // Custom Calendar Functions
   const getDaysInMonth = (date) => {
@@ -107,16 +156,26 @@ const ReceptionCalendar = () => {
       const isSelected = isSameDay(date, selectedDate);
       const isPast = isPastDate(date);
       const isTodayDate = isToday(date);
+      const hasBookings = hasBookingsOnDate(date);
+      const bookingCount = getBookingCountForDate(date);
 
       days.push(
         <div
           key={day}
           className={`calendar-day ${isSelected ? "selected" : ""} ${
             isPast ? "past" : ""
-          } ${isTodayDate ? "today" : ""}`}
+          } ${isTodayDate ? "today" : ""} ${hasBookings ? "has-bookings" : ""}`}
           onClick={() => selectDate(day)}
         >
-          {day}
+          <div className="day-number">{day}</div>
+          {hasBookings && (
+            <div className="booking-indicator">
+              <div className="booking-dot"></div>
+              {bookingCount >= 1 && (
+                <span className="booking-count">{bookingCount}</span>
+              )}
+            </div>
+          )}
         </div>
       );
     }

@@ -545,9 +545,9 @@ const Booking = () => {
               <div className="form-right-column">
                 {bookingType === "regular" && (
                   <div className="form-group">
-                    <label>Number of People (max 6):</label>
+                    <label>Number of People (max 12):</label>
                     <div className="number-selector">
-                      {[1, 2, 3, 4, 5, 6].map((num) => (
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => (
                         <button
                           key={num}
                           type="button"
@@ -724,7 +724,7 @@ const Booking = () => {
               <ul>
                 <li>📅 Each session is 45 minutes</li>
                 <li>🎳 6 lanes available per time slot</li>
-                <li>👥 Maximum 6 people per booking</li>
+                <li>👥 Maximum 12 people per booking</li>
                 <li>🔄 Maximum 3 rounds per booking</li>
                 <li>⏳ All bookings require admin approval</li>
                 <li>📞 For cancellation: 0566164488</li>

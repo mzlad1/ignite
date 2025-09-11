@@ -1025,3 +1025,107 @@
   outline: 2px solid var(--aurora-orange);
   outline-offset: 2px;
 }
+
+/* Booking Indicators for Calendar Days */
+.reception-calendar .calendar-day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.reception-calendar .day-number {
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+  font-weight: 500;
+  color: var(--cosmic-dark);
+  z-index: 2;
+}
+
+.reception-calendar .calendar-day.has-bookings {
+  background: rgba(255, 127, 0, 0.1);
+  border: 1px solid rgba(255, 127, 0, 0.3);
+}
+
+.reception-calendar .calendar-day.has-bookings:hover {
+  background: rgba(255, 127, 0, 0.2);
+  border-color: var(--aurora-orange);
+}
+
+.reception-calendar .calendar-day.has-bookings.selected {
+  background: var(--gradient-aurora) !important;
+  border-color: var(--aurora-orange) !important;
+}
+
+.reception-calendar .booking-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  z-index: 3;
+}
+
+.reception-calendar .booking-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--aurora-orange);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(255, 127, 0, 0.4);
+  animation: reception-dotPulse 2s ease-in-out infinite;
+}
+
+.reception-calendar .booking-count {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--aurora-orange);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 1px 3px;
+  min-width: 12px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.reception-calendar .calendar-day.selected .booking-dot {
+  background: var(--white);
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
+}
+
+.reception-calendar .calendar-day.selected .booking-count {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes reception-dotPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+}
+
+/* Enhanced visual feedback for days with bookings */
+.reception-calendar .calendar-day.has-bookings:not(.selected):not(.past):hover {
+  background: rgba(255, 127, 0, 0.15);
+  transform: scale(1.1);
+}
+
+.reception-calendar .calendar-day.has-bookings.today {
+  background: rgba(255, 215, 0, 0.3);
+  border: 2px solid var(--cosmic-gold);
+}
+
+.reception-calendar .calendar-day.has-bookings.today .booking-dot {
+  background: var(--cosmic-gold);
+}
+
+.reception-calendar .calendar-day.has-bookings.today .booking-count {
+  color: var(--cosmic-gold);
+  background: rgba(255, 255, 255, 0.9);
+}

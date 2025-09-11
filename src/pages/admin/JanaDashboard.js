@@ -1910,7 +1910,6 @@ const JanaDashboard = () => {
         .filter-btn {
           padding: 8px 16px;
           border: 2px solid #e5e7eb;
-          background: white;
           border-radius: 6px;
           cursor: pointer;
           transition: all 0.2s;
