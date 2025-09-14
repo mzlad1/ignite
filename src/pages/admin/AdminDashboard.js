@@ -75,11 +75,6 @@ const AdminDashboard = () => {
                 <h3>🎬 Media Management</h3>
                 <p>Manage images and videos for gaming zones</p>
               </Link>
-
-              <Link to="/admin/tournament-management" className="admin-card">
-                <h3>🏆 Tournament Management</h3>
-                <p>Manage tournament registrations and participants</p>
-              </Link>
             </>
           )}
 

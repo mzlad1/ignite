@@ -15,7 +15,7 @@ import Booking from "./pages/Booking";
 import Feedback from "./pages/Feedback";
 import BirthdayPackages from "./pages/BirthdayPackages";
 import FAQ from "./pages/FAQ";
-import TournamentRegistration from "./pages/TournamentRegistration";
+// import TournamentRegistration from "./pages/TournamentRegistration";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -25,7 +25,7 @@ import AddUser from "./pages/admin/AddUser";
 import ManageUsers from "./pages/admin/ManageUsers";
 import Settings from "./pages/admin/Settings";
 import MediaManagement from "./pages/admin/MediaManagement";
-import TournamentManagement from "./pages/admin/TournamentManagement";
+// import TournamentManagement from "./pages/admin/TournamentManagement";
 
 // Validate environment variables on app startup
 try {
@@ -52,7 +52,7 @@ function App() {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/birthday-packages" element={<BirthdayPackages />} />
             <Route path="/faq" element={<FAQ />} />
-            <Route path="/tournament" element={<TournamentRegistration />} />
+            {/* <Route path="/tournament" element={<TournamentRegistration />} /> */}
 
             {/* Public route - redirects authenticated users */}
             <Route
@@ -121,14 +121,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
+            {/* <Route
               path="/admin/tournament-management"
               element={
                 <ProtectedRoute requiredRole="jana">
                   <TournamentManagement />
                 </ProtectedRoute>
               }
-            />
+            /> */}
 
             {/* Catch-all route for 404 - must be last */}
             <Route path="*" element={<NotFound />} />
