@@ -119,7 +119,7 @@ const Navbar = () => {
             Home
           </Link>
           <Link to="/menu" className="nav-link" onClick={closeMobileMenu}>
-            Cafe
+            Menu
           </Link>
           <Link to="/offers" className="nav-link" onClick={closeMobileMenu}>
             Offers
